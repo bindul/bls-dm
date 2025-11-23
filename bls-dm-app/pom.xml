@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+    	<groupId>name.bindul.bls.dm</groupId>
+    	<artifactId>bls-dm</artifactId>
+    	<version>1.0.0-SNAPSHOT</version>
+  	</parent>
+  	<artifactId>bls-dm-app</artifactId>
+  	<packaging>pom</packaging>
+  	<name>Bowling League Stats :: Data Manager :: Application Packages</name>
+  	<modules>
+  	    <module>bls-dm-app-windows-x86_64</module>
+  	    <module>bls-dm-app-linux-x86_64</module>
+  	    <module>bls-dm-app-macosx-aarch64</module>
+  	</modules>
+</project>
