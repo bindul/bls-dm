@@ -11,10 +11,20 @@
   	<packaging>jar</packaging>
   	<name>Bowling League Stats :: Data Manager :: Data Store :: SQLite</name>
   	<dependencies>
+  		<!-- Project Dependencies -->
+  		<dependency>
+  			<groupId>${project.groupId}</groupId>
+  			<artifactId>bls-dm-core</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
   		<dependency>
   			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.xerial</groupId>
+  			<artifactId>sqlite-jdbc</artifactId>
   		</dependency>
   	</dependencies>
 </project>

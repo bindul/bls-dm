@@ -95,10 +95,20 @@
 	  			<artifactId>sqlite-jdbc</artifactId>
 	  			<version>3.51.0.0</version>
 	  		</dependency>
+	  		<dependency>
+	  			<groupId>org.eclipse.platform</groupId>
+	  			<artifactId>org.eclipse.swt</artifactId>
+	  			<version>3.131.0</version>
+	  		</dependency>
+	  		<dependency>
+	  			<groupId>org.eclipse.platform</groupId>
+	  			<artifactId>org.eclipse.jface</artifactId>
+	  			<version>3.38.0</version>
+	  		</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<properties>
-		<dev.java.version>25</dev.java.version>
+		<dev.java.version>21</dev.java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<lombok.version>1.18.38</lombok.version>
 	</properties>

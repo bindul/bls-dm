@@ -11,10 +11,29 @@
   	<packaging>jar</packaging>
   	<name>Bowling League Stats :: Data Manager :: UI :: SWT Desktop</name>
   	<dependencies>
+  		<!-- Project Dependencies -->
+  		<dependency>
+  			<groupId>${project.groupId}</groupId>
+  			<artifactId>bls-dm-core</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>${project.groupId}</groupId>
+  			<artifactId>bls-dm-store-sqlite</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
   		<dependency>
   			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.eclipse.platform</groupId>
+  			<artifactId>org.eclipse.swt</artifactId>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.eclipse.platform</groupId>
+  			<artifactId>org.eclipse.jface</artifactId>
   		</dependency>
   	</dependencies>
 </project>
