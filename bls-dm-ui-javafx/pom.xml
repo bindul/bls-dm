@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+    	<groupId>name.bindul.bls.dm</groupId>
+    	<artifactId>bls-dm</artifactId>
+    	<version>1.0.0-SNAPSHOT</version>
+  	</parent>
+  	<artifactId>bls-dm-ui-javafx</artifactId>
+  	<packaging>jar</packaging>
+  	<name>Bowling League Stats :: Data Manager :: UI :: JavaFX Desktop</name>
+  	<build>
+  		<plugins>
+  			<plugin>
+				<groupId>org.openjfx</groupId>
+		        <artifactId>javafx-maven-plugin</artifactId>
+		        <configuration>
+		        	<mainClass>name.bindul.bls.dm.ui.jfx.BlsDmApp</mainClass>
+		        </configuration>
+			</plugin>
+  		</plugins>
+  	</build>
+  	<dependencies>
+  		<!-- Project Dependencies -->
+  		<dependency>
+  			<groupId>${project.groupId}</groupId>
+  			<artifactId>bls-dm-core</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>${project.groupId}</groupId>
+  			<artifactId>bls-dm-store-sqlite</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+  		</dependency>
+  		
+  		<!-- Java FX -->
+  		<dependency>
+  			<groupId>org.openjfx</groupId>
+  			<artifactId>javafx-controls</artifactId> <!-- FUTURE: check out javafx-graphics -->
+  		</dependency>
+  		<dependency>
+  			<groupId>org.openjfx</groupId>
+  			<artifactId>javafx-fxml</artifactId>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.controlsfx</groupId>
+  			<artifactId>controlsfx</artifactId>
+  		</dependency>
+  	</dependencies>
+  	<!-- TODO: See if we need javafx-maven-plugin 0.0.8 -->
+</project>
