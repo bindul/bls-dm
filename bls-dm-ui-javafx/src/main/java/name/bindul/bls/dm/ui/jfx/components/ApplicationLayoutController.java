@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx;
+package name.bindul.bls.dm.ui.jfx.components;
 
 import org.controlsfx.control.StatusBar;
 
@@ -21,7 +21,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TabPane;
 
-public class BlsDmAppController {
+public class ApplicationLayoutController {
 
 	@FXML
 	private TabPane tabContentContainer;
@@ -31,29 +31,4 @@ public class BlsDmAppController {
 	
 	@FXML
 	private Menu recentFilesMenu;
-	
-	@FXML
-	protected void handleNew() {
-		// TODO Implement
-	}
-	
-	@FXML
-	protected void handleOpen() {
-		// TODO Implement
-	}
-	
-	@FXML
-	protected void openBowlingCenters() {
-		// TODO Implement
-	}
-	
-	@FXML
-	protected void exportBlsWebsiteFormatData() {
-		// TODO Implement
-	}
-	
-	@FXML
-	protected void showAbout() {
-		// TODO Implement
-	}
 }

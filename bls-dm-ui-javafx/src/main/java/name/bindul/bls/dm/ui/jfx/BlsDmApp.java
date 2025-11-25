@@ -18,17 +18,18 @@ package name.bindul.bls.dm.ui.jfx;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class BlsDmApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		final FXMLLoader fxmlLoader = new FXMLLoader(BlsDmApp.class.getResource("/bls-dm-main-view.fxml"));
+		final FXMLLoader fxmlLoader = new FXMLLoader(BlsDmApp.class.getResource("/name/bindul/bls/dm/ui/jfx/components/application-layout.fxml"));
 		final Scene scene = new Scene(fxmlLoader.load());
-//		fxmlLoader.getController();
 				
 		primaryStage.setTitle("Bowling League Stats - Data Manager");
+		primaryStage.getIcons().add(new Image(BlsDmApp.class.getResourceAsStream("/bowling-icon.png")));
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
