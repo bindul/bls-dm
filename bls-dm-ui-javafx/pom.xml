@@ -11,6 +11,22 @@
   	<packaging>jar</packaging>
   	<name>Bowling League Stats :: Data Manager :: UI :: JavaFX Desktop</name>
   	<build>
+  		<resources>
+  			<resource>
+  				<directory>src/main/resources</directory>
+  				<filtering>true</filtering>
+  				<includes>
+  					<include>**/version.properties</include>
+  				</includes>
+  			</resource>
+  			<resource>
+  				<directory>src/main/resources</directory>
+  				<filtering>false</filtering>
+  				<excludes>
+  					<exclude>**/version.properties</exclude>
+  				</excludes>
+  			</resource>
+  		</resources>
   		<plugins>
   			<plugin>
 				<groupId>org.openjfx</groupId>
@@ -38,7 +54,10 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
   		</dependency>
-  		
+  		<dependency>
+  			<groupId>org.apache.logging.log4j</groupId>
+  			<artifactId>log4j-api</artifactId>
+  		</dependency>
   		<!-- Java FX -->
   		<dependency>
   			<groupId>org.openjfx</groupId>

@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.store;
+package name.bindul.bls.dm.core.impl.api.league;
 
-import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-import java.util.ServiceLoader;
 
-public abstract class StoreProvider {
-	
-	public static List<StoreProvider> availableStoreProviders () {
-		ServiceLoader<StoreProvider> serviceLoader = ServiceLoader.load(StoreProvider.class);
-		return serviceLoader.stream().map(p -> p.get()).toList();
+import name.bindul.bls.dm.core.api.league.BowlingCenterService;
+import name.bindul.bls.dm.core.model.BowlingCenter;
+
+public class BowlingCenterServiceImpl implements BowlingCenterService {
+
+	@Override
+	public List<BowlingCenter> getBowlingCenters() {
+		// TODO Auto-generated method stub
+		return Collections.emptyList();
 	}
 
-	public abstract Store open(String location, String username, String password) throws IOException;
-	
-	public abstract Store create(String location, String username, String password) throws IOException;
 }

@@ -13,29 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components;
+package name.bindul.bls.dm.core.spi;
 
-import javafx.fxml.FXML;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-public class ApplicationMenuController {
-	@FXML
-	protected void handleNew() {
-		// TODO Implement
-	}
-	
-	@FXML
-	protected void handleOpen() {
-		// TODO Implement
-	}
-	
-	@FXML
-	protected void openBowlingCenters() {
-		// TODO Implement
-	}
-	
-	@FXML
-	protected void exportBlsWebsiteFormatData() {
-		// TODO Implement
-	}
-	
+@AllArgsConstructor @Getter @ToString @EqualsAndHashCode @Builder
+public class RepositoryLocationType {
+	private final String typeCode;
+	private boolean supportsCreateNew;
+	private boolean isLocalFile;
+	private boolean requiresCredentials;
 }

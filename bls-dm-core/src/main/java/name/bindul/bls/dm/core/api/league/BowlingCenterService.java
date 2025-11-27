@@ -13,25 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.store.sqlite;
+package name.bindul.bls.dm.core.api.league;
 
-import java.io.IOException;
+import java.util.List;
 
-import name.bindul.bls.dm.core.store.Store;
-import name.bindul.bls.dm.core.store.StoreProvider;
+import name.bindul.bls.dm.core.model.BowlingCenter;
 
-public class SqliteStoreProvider extends StoreProvider {
+public interface BowlingCenterService {
 
-	@Override
-	public Store open(String location, String username, String password) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Store create(String location, String username, String password) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	public List<BowlingCenter> getBowlingCenters();
+	
 }

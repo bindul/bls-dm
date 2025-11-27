@@ -1,0 +1,9 @@
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<Menu xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="name.bindul.bls.dm.ui.jfx.components.menu.HelpMenuController"
+    mnemonicParsing="false" text="%menu.help">
+    <items>
+        <MenuItem mnemonicParsing="false" onAction="#showAbout" text="%menu.help.about" />
+    </items>
+</Menu>

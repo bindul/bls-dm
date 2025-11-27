@@ -13,8 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.store;
+package name.bindul.bls.dm.core.model;
 
-public interface Store {
+import lombok.Data;
 
+@Data
+public class BowlingCenter {
+	private String id;
+	private String name;
+	private boolean active;
+	private String location;
 }

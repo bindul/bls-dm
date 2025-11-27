@@ -13,19 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components;
+package name.bindul.bls.dm.core.spi;
 
-import org.controlsfx.control.StatusBar;
+public interface Repository {
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TabPane;
-
-public class ApplicationLayoutController {
-
-	@FXML
-	private TabPane tabContentContainer;
-	
-	@FXML
-	private StatusBar statusBar;
-	
 }

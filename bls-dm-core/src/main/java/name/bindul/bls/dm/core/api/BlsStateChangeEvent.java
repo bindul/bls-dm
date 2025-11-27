@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components;
+package name.bindul.bls.dm.core.api;
 
-import org.controlsfx.control.StatusBar;
+import java.util.EventObject;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TabPane;
+import lombok.Getter;
 
-public class ApplicationLayoutController {
+public class BlsStateChangeEvent extends EventObject {
 
-	@FXML
-	private TabPane tabContentContainer;
+	private static final long serialVersionUID = -494864775460297415L;
 	
-	@FXML
-	private StatusBar statusBar;
-	
+	@Getter
+	private final boolean repositoryLoaded;
+
+	public BlsStateChangeEvent(Object source, boolean repositoryLoaded) {
+		super(source);
+		this.repositoryLoaded = repositoryLoaded;
+	}
+
 }

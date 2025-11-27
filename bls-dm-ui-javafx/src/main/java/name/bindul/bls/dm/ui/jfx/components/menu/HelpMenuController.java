@@ -13,27 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components.help;
+package name.bindul.bls.dm.ui.jfx.components.menu;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import name.bindul.bls.dm.ui.jfx.VersionInfo;
 
 public class HelpMenuController {
 	
 	@FXML
+	private ResourceBundle resources;
+	
+	@FXML
 	protected void showAbout(ActionEvent event) throws IOException {
 		
-		final FXMLLoader loader = new FXMLLoader(HelpMenuController.class.getResource("/name/bindul/bls/dm/ui/jfx/components/help/about-dialog.fxml"));
+		final FXMLLoader loader = new FXMLLoader(HelpMenuController.class.getResource("/name/bindul/bls/dm/ui/jfx/components/menu/about-dialog.fxml"), resources);
 		final DialogPane aboutDialogPane = (DialogPane) loader.load();
+		final Label versionLabel = (Label) aboutDialogPane.lookup("#buildVersion");
+		versionLabel.setText(VersionInfo.getVersion());
 		aboutDialogPane.autosize();
 		
 		final Dialog<String> aboutDialog = new Dialog<>();
 		aboutDialog.setDialogPane(aboutDialogPane);
+		aboutDialog.setTitle(resources.getString("app.title"));
 		aboutDialog.showAndWait();		
 	}
 }

@@ -15,6 +15,8 @@
  */
 package name.bindul.bls.dm.ui.jfx;
 
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,10 +27,13 @@ public class BlsDmApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		final FXMLLoader fxmlLoader = new FXMLLoader(BlsDmApp.class.getResource("/name/bindul/bls/dm/ui/jfx/components/application-layout.fxml"));
+		
+		final ResourceBundle resourceBundle = ResourceBundle.getBundle("name.bindul.bls.dm.ui.jfx.ui-resources");
+		
+		final FXMLLoader fxmlLoader = new FXMLLoader(BlsDmApp.class.getResource("/name/bindul/bls/dm/ui/jfx/components/application-layout.fxml"), resourceBundle);
 		final Scene scene = new Scene(fxmlLoader.load());
-				
-		primaryStage.setTitle("Bowling League Stats - Data Manager");
+
+		primaryStage.setTitle(resourceBundle.getString("app.title"));
 		primaryStage.getIcons().add(new Image(BlsDmApp.class.getResourceAsStream("/bowling-icon.png")));
 		primaryStage.setScene(scene);
 		primaryStage.show();

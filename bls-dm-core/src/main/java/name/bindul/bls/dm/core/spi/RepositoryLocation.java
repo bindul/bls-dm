@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components;
+package name.bindul.bls.dm.core.spi;
 
-import org.controlsfx.control.StatusBar;
+import java.io.File;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TabPane;
+import lombok.Data;
 
-public class ApplicationLayoutController {
+public interface RepositoryLocation {
 
-	@FXML
-	private TabPane tabContentContainer;
-	
-	@FXML
-	private StatusBar statusBar;
-	
+	@Data
+	public static class LocalFileRepositoryLocation implements RepositoryLocation {
+		private File location;
+		private String userName;
+		private char[] password;
+	}
 }
