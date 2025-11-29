@@ -24,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import name.bindul.bls.dm.ui.jfx.helpers.ApplicationOnCloseHandler;
 import name.bindul.bls.dm.ui.jfx.helpers.EntityEditorRegistry;
+import name.bindul.bls.dm.ui.jfx.helpers.ErrorDialog;
 
 public class BlsDmApp extends Application {
 
@@ -37,6 +38,9 @@ public class BlsDmApp extends Application {
 
 		// Registry to track all open editors
 		primaryStage.getProperties().put(EntityEditorRegistry.STAGE_PROPERTIES_KEY, new EntityEditorRegistry());
+		
+		// Error Handler
+		Thread.setDefaultUncaughtExceptionHandler(new ErrorDialog());
 		
 		primaryStage.setTitle(resourceBundle.getString("app.title"));
 		primaryStage.getIcons().add(new Image(BlsDmApp.class.getResourceAsStream("/bowling-icon.png")));

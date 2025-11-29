@@ -15,6 +15,7 @@
  */
 package name.bindul.bls.dm.ui.jfx.components.menu;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 import name.bindul.bls.dm.ui.jfx.helpers.ParentNodeAware;
@@ -35,7 +36,7 @@ public class ApplicationMenuController {
 	}
 	
 	@FXML
-	protected void exportBlsWebsiteFormatData() {
+	protected void exportBlsWebsiteFormatData(ActionEvent e) {
 		// TODO Implement - this will go to its own controller
 	}
 	
