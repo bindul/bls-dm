@@ -5,9 +5,10 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <MenuBar xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="name.bindul.bls.dm.ui.jfx.components.menu.ApplicationMenuController">
+    fx:controller="name.bindul.bls.dm.ui.jfx.components.menu.ApplicationMenuController"
+    fx:id="applicationMenuBar">
     <menus>
-        <fx:include source="file-menu.fxml"/>
+        <fx:include source="file-menu.fxml" fx:id="fileMenu"/>
         <Menu disable="true" mnemonicParsing="false" text="%menu.export">
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#exportBlsWebsiteFormatData" text="%menu.export.bls-site" />

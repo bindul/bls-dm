@@ -16,17 +16,27 @@
 package name.bindul.bls.dm.ui.jfx.components.menu;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuBar;
+import name.bindul.bls.dm.ui.jfx.helpers.ParentNodeAware;
 
 public class ApplicationMenuController {
 	
 	@FXML
-	protected void openBowlingCenters() {
-		// TODO Implement
+	private MenuBar applicationMenuBar;
+	
+	// This is a special injection by @FXML. The fx:id in the fxml is fileMenu, but the field has 'Controller' 
+	// added to it - then it injects the controller rather than the node.
+	@FXML
+	private ParentNodeAware fileMenuController;
+	
+	@FXML
+	public void initialize() {
+		fileMenuController.setParent(applicationMenuBar);
 	}
 	
 	@FXML
 	protected void exportBlsWebsiteFormatData() {
-		// TODO Implement
+		// TODO Implement - this will go to its own controller
 	}
 	
 }

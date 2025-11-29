@@ -17,12 +17,19 @@ package name.bindul.bls.dm.ui.jfx.components.menu;
 
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.stage.Stage;
 import name.bindul.bls.dm.core.api.BowlingLeagueStats;
+import name.bindul.bls.dm.ui.jfx.helpers.ApplicationOnCloseHandler;
+import name.bindul.bls.dm.ui.jfx.helpers.ParentNodeAware;
 
-public class FileMenuController {
+public class FileMenuController implements ParentNodeAware {
 	
 	@FXML
 	private ResourceBundle resources;
@@ -39,6 +46,13 @@ public class FileMenuController {
 	@FXML
 	private MenuItem closeRepository;
 	
+	private Parent parent;
+
+	@Override
+	public void setParent(Parent parent) {
+		this.parent = parent;
+	}
+
 	@FXML
 	public void initialize() {
 		final BowlingLeagueStats bls = BowlingLeagueStats.getInstance();
@@ -83,7 +97,14 @@ public class FileMenuController {
 	}
 	
 	@FXML
-	protected void handleExit() {
-		// TODO Implement
+	protected void handleExit(ActionEvent e) {
+		
+		final Stage parentStage = (Stage) parent.getScene().getWindow();
+		final ApplicationOnCloseHandler closeHandler = new ApplicationOnCloseHandler(parentStage);
+		closeHandler.createAlert().ifPresentOrElse(
+				a -> a.showAndWait()
+					.filter(r -> r == ButtonType.OK)
+					.ifPresent(r -> Platform.exit()),
+				Platform::exit);
 	}
 }

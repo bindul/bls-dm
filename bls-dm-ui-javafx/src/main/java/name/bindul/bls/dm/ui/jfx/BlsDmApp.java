@@ -22,6 +22,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import name.bindul.bls.dm.ui.jfx.helpers.ApplicationOnCloseHandler;
+import name.bindul.bls.dm.ui.jfx.helpers.EntityEditorRegistry;
 
 public class BlsDmApp extends Application {
 
@@ -33,9 +35,13 @@ public class BlsDmApp extends Application {
 		final FXMLLoader fxmlLoader = new FXMLLoader(BlsDmApp.class.getResource("/name/bindul/bls/dm/ui/jfx/components/application-layout.fxml"), resourceBundle);
 		final Scene scene = new Scene(fxmlLoader.load());
 
+		// Registry to track all open editors
+		primaryStage.getProperties().put(EntityEditorRegistry.STAGE_PROPERTIES_KEY, new EntityEditorRegistry());
+		
 		primaryStage.setTitle(resourceBundle.getString("app.title"));
 		primaryStage.getIcons().add(new Image(BlsDmApp.class.getResourceAsStream("/bowling-icon.png")));
 		primaryStage.setScene(scene);
+		primaryStage.setOnCloseRequest(new ApplicationOnCloseHandler(primaryStage));
 		primaryStage.show();
 	}
 
