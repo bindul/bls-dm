@@ -18,6 +18,7 @@ package name.bindul.bls.dm.ui.jfx.helpers;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import javafx.application.Platform;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
@@ -27,6 +28,11 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ErrorDialog implements UncaughtExceptionHandler {
 
+	public static void showErrorDialogP (String errorTitle, String errorMessage, Throwable e, Parent parent) {
+		final Window w = (parent != null && parent.getScene() != null) ? parent.getScene().getWindow() : null;
+		showErrorDialog(errorTitle, errorMessage, e, w);
+	}
+	
 	public static void showErrorDialog (String errorTitle, String errorMessage, Throwable e, Window owner) {
 		final Alert errorAlert = new Alert(AlertType.ERROR);
 		if (null != owner) {

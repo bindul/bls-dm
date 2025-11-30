@@ -17,14 +17,22 @@ package name.bindul.bls.dm.core.spi;
 
 import java.io.File;
 
+import lombok.Builder;
 import lombok.Data;
 
 public interface RepositoryLocation {
+	
+	String locationDisplayValue();
 
-	@Data
+	@Data @Builder
 	public static class LocalFileRepositoryLocation implements RepositoryLocation {
 		private File location;
 		private String userName;
 		private char[] password;
+		
+		@Override
+		public String locationDisplayValue() {
+			return location.getPath();
+		}
 	}
 }

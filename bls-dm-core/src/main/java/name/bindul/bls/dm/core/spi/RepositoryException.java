@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.api;
+package name.bindul.bls.dm.core.spi;
 
-import java.util.EventListener;
+public class RepositoryException extends Exception {
 
-@FunctionalInterface
-public interface BlsStateChangeListener extends EventListener {
+	private static final long serialVersionUID = -3202925729041534330L;
 
-	void repositoryLoadedOrUnloaded (BlsStateChangeEvent event);
+	public RepositoryException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public RepositoryException(String message) {
+		super(message);
+	}
 
 }

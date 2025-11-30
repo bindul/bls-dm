@@ -15,7 +15,6 @@
  */
 package name.bindul.bls.dm.core.spi;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -30,7 +29,7 @@ public abstract class RepositoryProvider {
 	
 	public abstract boolean canOpenOrCreate(RepositoryLocation location);
 
-	public abstract Repository open(RepositoryLocation location) throws IOException;
+	public abstract Repository open(RepositoryLocation location) throws RepositoryException;
 	
-	public abstract Repository create(RepositoryLocation location) throws IOException;
+	public abstract Repository create(RepositoryLocation location) throws RepositoryException;
 }

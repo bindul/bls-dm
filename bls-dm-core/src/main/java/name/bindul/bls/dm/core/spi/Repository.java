@@ -17,4 +17,5 @@ package name.bindul.bls.dm.core.spi;
 
 public interface Repository {
 
+	public void close() throws RepositoryException;
 }

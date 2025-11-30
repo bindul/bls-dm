@@ -26,6 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lombok.RequiredArgsConstructor;
+import name.bindul.bls.dm.ui.jfx.context.ApplicationContext;
 
 @RequiredArgsConstructor
 public class ApplicationOnCloseHandler implements EventHandler<WindowEvent> {
@@ -43,9 +44,7 @@ public class ApplicationOnCloseHandler implements EventHandler<WindowEvent> {
 	}
 	
 	public Optional<Alert> createAlert() {
-		final EntityEditorRegistry editorRegistry = (EntityEditorRegistry) parentStage.getProperties()
-				.get(EntityEditorRegistry.STAGE_PROPERTIES_KEY);
-		if (null != editorRegistry && editorRegistry.hasDirtyEditors()) {
+		if (ApplicationContext.getInstance().getEntityEditorRegistry().hasDirtyEditors()) {
 			final Alert exitAlert = new Alert(AlertType.CONFIRMATION);
 			exitAlert.initOwner(parentStage);
 			exitAlert.initModality(Modality.APPLICATION_MODAL);

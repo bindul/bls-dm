@@ -23,7 +23,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import name.bindul.bls.dm.ui.jfx.helpers.ApplicationOnCloseHandler;
-import name.bindul.bls.dm.ui.jfx.helpers.EntityEditorRegistry;
 import name.bindul.bls.dm.ui.jfx.helpers.ErrorDialog;
 
 public class BlsDmApp extends Application {
@@ -35,9 +34,6 @@ public class BlsDmApp extends Application {
 		
 		final FXMLLoader fxmlLoader = new FXMLLoader(BlsDmApp.class.getResource("/name/bindul/bls/dm/ui/jfx/components/application-layout.fxml"), resourceBundle);
 		final Scene scene = new Scene(fxmlLoader.load());
-
-		// Registry to track all open editors
-		primaryStage.getProperties().put(EntityEditorRegistry.STAGE_PROPERTIES_KEY, new EntityEditorRegistry());
 		
 		// Error Handler
 		Thread.setDefaultUncaughtExceptionHandler(new ErrorDialog());

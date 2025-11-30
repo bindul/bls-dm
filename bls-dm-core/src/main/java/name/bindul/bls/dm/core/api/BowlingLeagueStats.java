@@ -15,10 +15,10 @@
  */
 package name.bindul.bls.dm.core.api;
 
-import java.io.IOException;
 import java.util.List;
 
 import name.bindul.bls.dm.core.impl.api.BowlingLeagueStatsImpl;
+import name.bindul.bls.dm.core.spi.RepositoryException;
 import name.bindul.bls.dm.core.spi.RepositoryLocation;
 import name.bindul.bls.dm.core.spi.RepositoryLocationType;
 
@@ -37,9 +37,11 @@ public abstract class BowlingLeagueStats {
 	
 	public abstract boolean isRepositoryConnected();
 	
-	public abstract void newRepository (RepositoryLocation newBlsStore) throws IOException;
+	public abstract void newRepository (RepositoryLocation newBlsStore) throws RepositoryException;
 	
-	public abstract void openRepository (RepositoryLocation existingBlsStore) throws IOException;
+	public abstract void openRepository (RepositoryLocation existingBlsStore) throws RepositoryException;
+	
+	public abstract void closeRepository () throws RepositoryException;
 
 	public abstract void addStateChangeListener (BlsStateChangeListener listener);
 	

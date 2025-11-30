@@ -25,8 +25,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import name.bindul.bls.dm.core.api.BowlingLeagueStats;
+import name.bindul.bls.dm.ui.jfx.components.actions.CloseRepositoryAction;
+import name.bindul.bls.dm.ui.jfx.components.actions.NewRepositoryAction;
+import name.bindul.bls.dm.ui.jfx.components.actions.OpenRepositoryAction;
 import name.bindul.bls.dm.ui.jfx.helpers.ApplicationOnCloseHandler;
 import name.bindul.bls.dm.ui.jfx.helpers.ErrorDialog;
 import name.bindul.bls.dm.ui.jfx.helpers.ParentNodeAware;
@@ -34,7 +36,7 @@ import name.bindul.bls.dm.ui.jfx.helpers.ParentNodeAware;
 public class FileMenuController implements ParentNodeAware {
 	
 	@FXML
-	private ResourceBundle resources;
+	private ResourceBundle resources; // Field name MUST be 'resources'
 	
 	@FXML
 	private Menu newMenu;
@@ -57,28 +59,27 @@ public class FileMenuController implements ParentNodeAware {
 
 	@FXML
 	public void initialize() {
-		
 		Platform.runLater(() -> {
 			try {
 				final BowlingLeagueStats bls = BowlingLeagueStats.getInstance();
 				// Set up menus
 				bls.getSupportedRepositoryLocationTypes().forEach(type -> {
-					final String label = resources.getString("menu.file.repo.type." + type.getTypeCode());
+					final String label = resources.getString("repo.type." + type.getTypeCode());
 					if (type.isSupportsCreateNew()) {
-						final MenuItem newTypeMenu = new MenuItem(label);
-						newTypeMenu.setOnAction(e -> handleNewRepository(type.getTypeCode()));
-						newMenu.getItems().add(newTypeMenu);
+						final MenuItem newRepoMenu = new MenuItem(label);
+						newRepoMenu.setOnAction(new NewRepositoryAction(bls, type, resources, parent));
+						newMenu.getItems().add(newRepoMenu);
 					}
-					final MenuItem openTypeMenu = new MenuItem(label);
-					openTypeMenu.setOnAction(e -> handleOpenRepository(type.getTypeCode()));
-					openMenu.getItems().add(openTypeMenu);
+					final MenuItem openRepoMenu = new MenuItem(label);
+					openRepoMenu.setOnAction(new OpenRepositoryAction(bls, type, resources, parent));
+					openMenu.getItems().add(openRepoMenu);
 				});
 				flipDisabled(bls.isRepositoryConnected());
 				
 				bls.addStateChangeListener(event -> flipDisabled(event.isRepositoryLoaded()));
 			} catch (Exception e) {
-				final Window w = (parent != null && parent.getScene() != null) ? parent.getScene().getWindow() : null;
-				ErrorDialog.showErrorDialog("Unable to start BLS: DM", "Error initializing resource store(s)", e, w);
+				ErrorDialog.showErrorDialogP(resources.getString("menu.file.init.error.title"), 
+						resources.getString("menu.file.init.error.message"), e, parent);
 			}
 		});
 	}
@@ -90,24 +91,13 @@ public class FileMenuController implements ParentNodeAware {
 		closeRepository.setDisable(!repositoryLoaded);
 	}
 
-	private void handleNewRepository(String typeId) {
-		// TODO Implement
-		System.out.println("New");
-	}
-	
-	private void handleOpenRepository(String typeId) {
-		// TODO Implement
-		System.out.println("Open");
-	}
-	
 	@FXML
 	protected void handleCloseRepository(ActionEvent e) {
-		// TODO Implement
+		new CloseRepositoryAction(resources, parent).handle(e);
 	}
 	
 	@FXML
 	protected void handleExit(ActionEvent e) {
-		
 		final Stage parentStage = (Stage) parent.getScene().getWindow();
 		final ApplicationOnCloseHandler closeHandler = new ApplicationOnCloseHandler(parentStage);
 		closeHandler.createAlert().ifPresentOrElse(

@@ -15,21 +15,23 @@
  */
 package name.bindul.bls.dm.core.impl.api;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
 
+import name.bindul.bls.dm.core.api.BlsStateChangeEvent;
 import name.bindul.bls.dm.core.api.BlsStateChangeListener;
 import name.bindul.bls.dm.core.api.BowlingLeagueStats;
 import name.bindul.bls.dm.core.spi.Repository;
+import name.bindul.bls.dm.core.spi.RepositoryException;
 import name.bindul.bls.dm.core.spi.RepositoryLocation;
 import name.bindul.bls.dm.core.spi.RepositoryLocationType;
 import name.bindul.bls.dm.core.spi.RepositoryProvider;
 
 public class BowlingLeagueStatsImpl extends BowlingLeagueStats {
 
-	private final EventListenerSupport<BlsStateChangeListener> stateChangeListenerSupport = new EventListenerSupport<>(BlsStateChangeListener.class);
+	private final EventListenerSupport<BlsStateChangeListener> stateChangeListenerSupport = EventListenerSupport.create(BlsStateChangeListener.class);
 	
 	private final List<RepositoryProvider> repositoryProviders;
 	
@@ -50,15 +52,42 @@ public class BowlingLeagueStatsImpl extends BowlingLeagueStats {
 	}
 
 	@Override
-	public void newRepository(RepositoryLocation newBlsStore) throws IOException {
-		// TODO Auto-generated method stub
-		
+	public void newRepository(RepositoryLocation newBlsStore) throws RepositoryException {
+		final Optional<RepositoryProvider> prov = findRepositoryProvider(newBlsStore);
+		if (prov.isPresent()) {
+			this.repository = prov.get().create(newBlsStore);
+			fireRepositoryLoadedOrUnloadedEvent(newBlsStore);
+		}
 	}
 
 	@Override
-	public void openRepository(RepositoryLocation existingBlsStore) throws IOException {
-		// TODO Auto-generated method stub
-		
+	public void openRepository(RepositoryLocation existingBlsStore) throws RepositoryException {
+		final Optional<RepositoryProvider> prov = findRepositoryProvider(existingBlsStore);
+		if (prov.isPresent()) {
+			this.repository = prov.get().open(existingBlsStore);
+			fireRepositoryLoadedOrUnloadedEvent(existingBlsStore);
+		}
+	}
+	
+	@Override
+	public void closeRepository() throws RepositoryException {
+		if (isRepositoryConnected()) {
+			this.repository.close();
+			this.repository = null;
+			fireRepositoryLoadedOrUnloadedEvent(null);
+		}
+	}
+
+	private Optional<RepositoryProvider> findRepositoryProvider(RepositoryLocation blsStore) {
+		return repositoryProviders.stream().filter(rp -> rp.canOpenOrCreate(blsStore)).findFirst();
+	}
+	
+	private void fireRepositoryLoadedOrUnloadedEvent(RepositoryLocation location) {
+		stateChangeListenerSupport.fire()
+			.repositoryLoadedOrUnloaded(
+					new BlsStateChangeEvent(this, 
+							isRepositoryConnected(), 
+							(null != location) ? location.locationDisplayValue() : null));
 	}
 
 	@Override

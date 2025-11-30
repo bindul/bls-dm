@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.controlsfx.control.StatusBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+
+<StatusBar xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="name.bindul.bls.dm.ui.jfx.components.statusbar.StatusBarController" text="">
+    <leftItems>
+        <Label fx:id="repositoryLabel"/>
+    </leftItems>
+    <rightItems>
+        <Label fx:id="statusLabel"/>
+    </rightItems>
+</StatusBar>

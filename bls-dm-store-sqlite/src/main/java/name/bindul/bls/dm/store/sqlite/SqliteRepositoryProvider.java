@@ -15,23 +15,37 @@
  */
 package name.bindul.bls.dm.store.sqlite;
 
-import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
 
+import lombok.extern.log4j.Log4j2;
 import name.bindul.bls.dm.core.spi.Repository;
+import name.bindul.bls.dm.core.spi.RepositoryException;
 import name.bindul.bls.dm.core.spi.RepositoryLocation;
+import name.bindul.bls.dm.core.spi.RepositoryLocation.LocalFileRepositoryLocation;
 import name.bindul.bls.dm.core.spi.RepositoryLocationType;
 import name.bindul.bls.dm.core.spi.RepositoryProvider;
-import name.bindul.bls.dm.core.spi.RepositoryLocation.LocalFileRepositoryLocation;
 
+@Log4j2
 public class SqliteRepositoryProvider extends RepositoryProvider {
 	
 	private static final RepositoryLocationType SUPPORTED_LOC_TYPE = RepositoryLocationType.builder()
 			.typeCode("local.file.sqllite")
 			.isLocalFile(true)
+			.localFileExtensions(Arrays.asList("*.sqlite", "*.sqlite3", "*.db", "*.db3"))
 			.supportsCreateNew(true)
 			.requiresCredentials(false)
 			.build();
 
+	public SqliteRepositoryProvider () throws RepositoryException {
+		// Validate we have JDBC driver
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			throw new RepositoryException("SQLite JDBC driver not found.", e);
+		}
+	}
+	
 	@Override
 	public RepositoryLocationType supportedLocationType() {
 		return SUPPORTED_LOC_TYPE;
@@ -39,21 +53,32 @@ public class SqliteRepositoryProvider extends RepositoryProvider {
 
 	@Override
 	public boolean canOpenOrCreate(RepositoryLocation location) {
-		return location != null && location instanceof LocalFileRepositoryLocation;
+		return location instanceof LocalFileRepositoryLocation;
 	}
 
 	@Override
-	public Repository open(RepositoryLocation location) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public Repository open(RepositoryLocation location) throws RepositoryException {
+		return openOrCreateRepository(location, false);
 	}
 
 	@Override
-	public Repository create(RepositoryLocation location) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public Repository create(RepositoryLocation location) throws RepositoryException {
+		return openOrCreateRepository(location, true);
 	}
 
-
-
+	private SqlliteRepository openOrCreateRepository(RepositoryLocation location, boolean create) throws RepositoryException {
+		if (!(location instanceof LocalFileRepositoryLocation)) {
+			throw new RepositoryException("This implementation can only open local file repositories");
+		}
+		final String jdbcUrl = "jdbc:sqlite:" + ((LocalFileRepositoryLocation) location).getLocation().getPath();
+		log.info("Will open repository at: {}", jdbcUrl);
+		try {
+			final SqlliteRepository repository = new SqlliteRepository(jdbcUrl, create);
+			repository.connect();
+			// TODO Do initialization and validation of schema
+			return repository;
+		} catch (SQLException e) {
+			throw new RepositoryException("Error opening and validating the repository: " + e.getMessage(), e);
+		}
+	}
 }

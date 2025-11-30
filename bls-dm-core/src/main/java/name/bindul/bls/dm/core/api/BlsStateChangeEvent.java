@@ -25,10 +25,14 @@ public class BlsStateChangeEvent extends EventObject {
 	
 	@Getter
 	private final boolean repositoryLoaded;
+	
+	@Getter
+	private final String repositoryLocation;
 
-	public BlsStateChangeEvent(Object source, boolean repositoryLoaded) {
+	public BlsStateChangeEvent(Object source, boolean repositoryLoaded, String repositoryLocation) {
 		super(source);
 		this.repositoryLoaded = repositoryLoaded;
+		this.repositoryLocation = repositoryLocation;
 	}
 
 }

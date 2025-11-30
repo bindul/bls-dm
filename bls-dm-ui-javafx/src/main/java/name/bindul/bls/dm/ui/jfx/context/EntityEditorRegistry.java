@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.helpers;
+package name.bindul.bls.dm.ui.jfx.context;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import name.bindul.bls.dm.ui.jfx.components.editors.EntityEditor;
 
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class EntityEditorRegistry {
 	
-	public static final String STAGE_PROPERTIES_KEY = "ENTITY_EDITORS";
-
 	private final List<EntityEditor> openEditors = new ArrayList<>();
 	
 	public void registerEditor(EntityEditor editor) {

@@ -15,8 +15,6 @@
  */
 package name.bindul.bls.dm.ui.jfx.components;
 
-import org.controlsfx.control.StatusBar;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 
@@ -24,8 +22,5 @@ public class ApplicationLayoutController {
 
 	@FXML
 	private TabPane tabContentContainer;
-	
-	@FXML
-	private StatusBar statusBar;
 	
 }

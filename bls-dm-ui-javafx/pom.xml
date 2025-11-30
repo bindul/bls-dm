@@ -72,5 +72,4 @@
   			<artifactId>controlsfx</artifactId>
   		</dependency>
   	</dependencies>
-  	<!-- TODO: See if we need javafx-maven-plugin 0.0.8 -->
 </project>

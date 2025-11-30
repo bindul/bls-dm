@@ -15,6 +15,8 @@
  */
 package name.bindul.bls.dm.core.spi;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -26,5 +28,6 @@ public class RepositoryLocationType {
 	private final String typeCode;
 	private boolean supportsCreateNew;
 	private boolean isLocalFile;
+	private List<String> localFileExtensions;
 	private boolean requiresCredentials;
 }
