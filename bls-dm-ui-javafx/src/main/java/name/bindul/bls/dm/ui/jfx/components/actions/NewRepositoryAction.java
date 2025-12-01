@@ -34,13 +34,11 @@ import name.bindul.bls.dm.ui.jfx.context.ApplicationContext;
 
 public class NewRepositoryAction extends RepositoryLocationActionSupport implements EventHandler<ActionEvent> {
 	
-	private final BowlingLeagueStats bls;
-	private final RepositoryLocationType repositoryLocType;
+	protected final RepositoryLocationType repositoryLocType;
 	
 	public NewRepositoryAction(BowlingLeagueStats bls, RepositoryLocationType repositoryLocType,
 			ResourceBundle resources, Parent parent) {
-		super(resources, parent);
-		this.bls = bls;
+		super(bls, resources, parent);
 		this.repositoryLocType = repositoryLocType;
 	}
 
@@ -56,7 +54,6 @@ public class NewRepositoryAction extends RepositoryLocationActionSupport impleme
 		final File chosenFile = createFileChooser(repositoryLocType).showSaveDialog(parent.getScene().getWindow());
 		
 		if (null != chosenFile) {
-			
 			// Confirm overwrite
 			if (chosenFile.exists()) {
 				final Alert overwriteConfirmation = new Alert(AlertType.CONFIRMATION);
@@ -71,10 +68,10 @@ public class NewRepositoryAction extends RepositoryLocationActionSupport impleme
 				}
 			}
 			
-			
 			final RepositoryLocation repoLocation = LocalFileRepositoryLocation.builder().location(chosenFile).build();
 			final Task<Void> newRepositoryTask = createNewRepositoryTask(repoLocation);
 			
+			addToRecentFiles(repositoryLocType, chosenFile);
 			ApplicationContext.getInstance().getExecutorService().execute(newRepositoryTask);
 		}
 	}

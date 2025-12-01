@@ -25,13 +25,17 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import name.bindul.bls.dm.core.api.BowlingLeagueStats;
 import name.bindul.bls.dm.core.spi.RepositoryLocationType;
 import name.bindul.bls.dm.ui.jfx.context.ApplicationContext;
 import name.bindul.bls.dm.ui.jfx.helpers.ErrorDialog;
+import name.bindul.bls.dm.ui.jfx.pref.ApplicationPreferences;
+import name.bindul.bls.dm.ui.jfx.pref.RecentRepository;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 abstract class RepositoryLocationActionSupport {
 
+	protected final BowlingLeagueStats bls;
 	protected final ResourceBundle resources;
 	protected final Parent parent;
 
@@ -74,5 +78,10 @@ abstract class RepositoryLocationActionSupport {
 						resources.getString(resourceKeyPrefix + ".error-dialog.message"), exception, parent);
 			}
 		});
+	}
+	
+	protected void addToRecentFiles(RepositoryLocationType repositoryLocType, File chosenFile) {
+		final RecentRepository recentRepo = new RecentRepository(repositoryLocType.getTypeCode(), chosenFile.getPath());
+		ApplicationPreferences.addRecentRepository(recentRepo);
 	}
 }

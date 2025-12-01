@@ -30,13 +30,11 @@ import name.bindul.bls.dm.ui.jfx.context.ApplicationContext;
 
 public class OpenRepositoryAction extends RepositoryLocationActionSupport implements EventHandler<ActionEvent> {
 	
-	protected final BowlingLeagueStats bls;
 	protected final RepositoryLocationType repositoryLocType;
-
+	
 	public OpenRepositoryAction(BowlingLeagueStats bls, RepositoryLocationType repositoryLocType,
 			ResourceBundle resources, Parent parent) {
-		super(resources, parent);
-		this.bls = bls;
+		super(bls, resources, parent);
 		this.repositoryLocType = repositoryLocType;
 	}
 
@@ -49,15 +47,22 @@ public class OpenRepositoryAction extends RepositoryLocationActionSupport implem
 	}
 
 	private void openLocalFile() {
-		final File chosenFile = createFileChooser(repositoryLocType).showOpenDialog(parent.getScene().getWindow());
+		final RepositoryLocation repoLocation = chooseRepositoryLocation();
 		
-		if (null != chosenFile) {
-			
-			final RepositoryLocation repoLocation = LocalFileRepositoryLocation.builder().location(chosenFile).build();
+		if (null != repoLocation) {
 			final Task<Void> newRepositoryTask = createOpenRepositoryTask(repoLocation);
 			
+			addToRecentFiles(repositoryLocType, ((LocalFileRepositoryLocation) repoLocation).getLocation());
 			ApplicationContext.getInstance().getExecutorService().execute(newRepositoryTask);
 		}
+	}
+
+	protected RepositoryLocation chooseRepositoryLocation() {
+		final File chosenFile = createFileChooser(repositoryLocType).showOpenDialog(parent.getScene().getWindow());
+		if (null != chosenFile) {
+			return LocalFileRepositoryLocation.builder().location(chosenFile).build();
+		}
+		return null;
 	}
 
 	private Task<Void> createOpenRepositoryTask(RepositoryLocation repoLocation) {

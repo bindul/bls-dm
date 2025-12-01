@@ -26,8 +26,8 @@ import name.bindul.bls.dm.ui.jfx.context.ApplicationContext;
 
 public class CloseRepositoryAction extends RepositoryLocationActionSupport implements EventHandler<ActionEvent> {
 
-	public CloseRepositoryAction(ResourceBundle resources, Parent parent) {
-		super(resources, parent);
+	public CloseRepositoryAction(BowlingLeagueStats bls, ResourceBundle resources, Parent parent) {
+		super(bls, resources, parent);
 	}
 
 	@Override

@@ -13,24 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.spi;
+package name.bindul.bls.dm.ui.jfx.pref;
 
-import java.io.File;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import lombok.Builder;
-import lombok.Data;
-
-public interface RepositoryLocation {
-	
-	String locationDisplayValue();
-
-	@Data @Builder
-	public static class LocalFileRepositoryLocation implements RepositoryLocation {
-		private File location;
-		
-		@Override
-		public String locationDisplayValue() {
-			return location.getPath();
-		}
-	}
-}
+@JsonSerialize
+public record RecentRepository(String repositoryLocationTypeCode, String location) {}

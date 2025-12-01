@@ -58,6 +58,11 @@
   			<groupId>org.apache.logging.log4j</groupId>
   			<artifactId>log4j-api</artifactId>
   		</dependency>
+  		<!-- JSON Processing -->
+  		<dependency>
+           <groupId>com.fasterxml.jackson.core</groupId>
+           <artifactId>jackson-databind</artifactId>
+        </dependency>
   		<!-- Java FX -->
   		<dependency>
   			<groupId>org.openjfx</groupId>

@@ -30,5 +30,9 @@
   			<groupId>org.xerial</groupId>
   			<artifactId>sqlite-jdbc</artifactId>
   		</dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
   	</dependencies>
 </project>
