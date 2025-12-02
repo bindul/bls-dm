@@ -15,41 +15,110 @@
  */
 package name.bindul.bls.dm.store.sqlite;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-import lombok.RequiredArgsConstructor;
+import org.sqlite.JDBC;
+import org.sqlite.javax.SQLiteConnectionPoolDataSource;
+
+import liquibase.Contexts;
+import liquibase.LabelExpression;
+import liquibase.Liquibase;
+import liquibase.changelog.ChangeSetStatus;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.extern.log4j.Log4j2;
 import name.bindul.bls.dm.core.spi.Repository;
 import name.bindul.bls.dm.core.spi.RepositoryException;
 
 @Log4j2
-@RequiredArgsConstructor
 public class SqlliteRepository implements Repository {
+	
+	private static final String DB_CHANGE_LOG_INDEX = "/bls-sqlite-db/changeset-index.xml";
 
+	private final File repositoryLocation;
 	private final String jdbcUrl;
 	private final boolean newRepository;
 	
-	private Connection connection;
+	private SQLiteConnectionPoolDataSource dataSource;
 	
-	public void connect() throws SQLException {
-		// No point pooling connections here: https://stackoverflow.com/questions/15822778/sqlite-connection-pool-in-java-locked-database
-		if (null == connection) {
-			connection = DriverManager.getConnection(jdbcUrl);
+	public SqlliteRepository (File repositoryLocation, boolean newRepository) {
+		this.repositoryLocation = repositoryLocation;
+		this.newRepository = newRepository;
+		
+		this.jdbcUrl = JDBC.PREFIX + repositoryLocation.getPath();
+		log.info("Will open repository at: {}", jdbcUrl);
+	}
+	
+	public void connect() throws RepositoryException, SQLException {
+		if (null == dataSource) {
+			dataSource = new SQLiteConnectionPoolDataSource();
+			dataSource.setUrl(jdbcUrl);
+			try {
+				if (newRepository) {
+					updateSchema();
+				} else if (hasSchemaChanges()) {
+					backupRepositoryFile();
+					updateSchema();
+				}
+			} catch (LiquibaseException e) {
+				log.warn("Error executing liquibase changeset: {} {}", e.getDetails(), e.getMessage(), e);
+				throw new RepositoryException("Error executing liquibase DB changesets: " + e.getMessage(), e);
+			}
 		}
 	}
 
 	@Override
 	public void close() throws RepositoryException {
-		if (null != connection) {
-			try {
-				connection.close();
-				connection = null;
-				log.debug("Closed repository connection");
-			} catch (SQLException e) {
-				throw new RepositoryException("Error closing connection to repository.", e);
+		if (null != dataSource) {
+			// Does not seem to have a close function!
+			dataSource = null;
+		}
+	}
+	
+	private boolean hasSchemaChanges () throws SQLException, LiquibaseException {
+		final List<ChangeSetStatus> changeSetStatuses = executeLiquibaseAction(
+				liquibase -> liquibase.getChangeSetStatuses(new Contexts(), new LabelExpression()));
+		return changeSetStatuses.stream().anyMatch(ChangeSetStatus::getWillRun);
+	}
+	
+	private void updateSchema() throws SQLException, LiquibaseException {
+		executeLiquibaseAction(liquibase -> {liquibase.update(); return null;});
+	}
+	
+	private <R> R executeLiquibaseAction(LiquibaseOperation<R> liquibaseAction) throws SQLException, LiquibaseException {
+		try (Connection connection = dataSource.getConnection()) {
+			final Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+			try (final Liquibase liquibase = new Liquibase(DB_CHANGE_LOG_INDEX, new ClassLoaderResourceAccessor(), database)) {
+				return liquibaseAction.apply(liquibase);
 			}
 		}
+	}
+	
+	private void backupRepositoryFile() throws RepositoryException {
+		final String backupTimestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+		final String backupFileLoc = new StringBuilder(repositoryLocation.getPath()).append(".").append(backupTimestamp).append(".backup").toString();
+		
+		try {
+			Files.copy(repositoryLocation.toPath(), Paths.get(backupFileLoc), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw new RepositoryException("Error backing up repository file before updating: " + e.getMessage(), e);
+		}
+	}
+	
+	@FunctionalInterface
+	interface LiquibaseOperation<R> {
+		R apply (Liquibase liquibase) throws LiquibaseException;
 	}
 }

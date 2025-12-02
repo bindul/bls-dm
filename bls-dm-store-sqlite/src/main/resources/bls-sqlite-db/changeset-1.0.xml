@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="1-0" author="bindul" dbms="sqlite">
+        <createTable tableName="BOWLING_CENTER">
+            <column name="CENTER_ID" type="TEXT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="BOWLING_CENTER_PK" />
+            </column>
+            <column name="NAME" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <!-- Liquibase does not support check constraint in open source versions and SQLite does not support adding
+            constraints to existing tables without recreating the table -->
+            <column name="IS_ACTIVE" type="INTEGER" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOCATION" type="TEXT" />
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

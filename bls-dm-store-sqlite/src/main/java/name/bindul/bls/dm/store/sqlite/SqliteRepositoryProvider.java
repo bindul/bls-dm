@@ -58,24 +58,21 @@ public class SqliteRepositoryProvider extends RepositoryProvider {
 
 	@Override
 	public Repository open(RepositoryLocation location) throws RepositoryException {
-		return openOrCreateRepository(location, false);
+		return openOrCreateRepository((LocalFileRepositoryLocation) location, false);
 	}
 
 	@Override
 	public Repository create(RepositoryLocation location) throws RepositoryException {
-		return openOrCreateRepository(location, true);
+		return openOrCreateRepository((LocalFileRepositoryLocation) location, true);
 	}
 
-	private SqlliteRepository openOrCreateRepository(RepositoryLocation location, boolean create) throws RepositoryException {
+	private SqlliteRepository openOrCreateRepository(LocalFileRepositoryLocation location, boolean create) throws RepositoryException {
 		if (!(location instanceof LocalFileRepositoryLocation)) {
 			throw new RepositoryException("This implementation can only open local file repositories");
 		}
-		final String jdbcUrl = "jdbc:sqlite:" + ((LocalFileRepositoryLocation) location).getLocation().getPath();
-		log.info("Will open repository at: {}", jdbcUrl);
 		try {
-			final SqlliteRepository repository = new SqlliteRepository(jdbcUrl, create);
+			final SqlliteRepository repository = new SqlliteRepository(location.getLocation(), create);
 			repository.connect();
-			// TODO Do initialization and validation of schema
 			return repository;
 		} catch (SQLException e) {
 			throw new RepositoryException("Error opening and validating the repository: " + e.getMessage(), e);
