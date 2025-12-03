@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.impl.api.league;
+package name.bindul.bls.dm.core.spi.accessors;
 
-import java.util.Collections;
 import java.util.List;
 
-import name.bindul.bls.dm.core.api.league.BowlingCenterService;
 import name.bindul.bls.dm.core.model.BowlingCenter;
+import name.bindul.bls.dm.core.spi.RepositoryException;
 
-public class BowlingCenterServiceImpl implements BowlingCenterService {
+public interface ReferenceDataAccessor {
 
-	@Override
-	public List<BowlingCenter> getBowlingCenters() {
-		// TODO Auto-generated method stub
-		return Collections.emptyList();
-	}
-
+	public List<BowlingCenter> getBowlingCenters() throws RepositoryException;
+	
+	public void createBowlingCenter (BowlingCenter bowlingCenter) throws RepositoryException;
+	
+	public void updateBowlingCenter (BowlingCenter bowlingCenter) throws RepositoryException;
+	
+	public void deleteBowlingCenter (String id) throws RepositoryException;
 }

@@ -23,17 +23,25 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 import name.bindul.bls.dm.core.api.BlsStateChangeEvent;
 import name.bindul.bls.dm.core.api.BlsStateChangeListener;
 import name.bindul.bls.dm.core.api.BowlingLeagueStats;
+import name.bindul.bls.dm.core.api.EntityChangeEvent;
+import name.bindul.bls.dm.core.api.EntityChangeListener;
+import name.bindul.bls.dm.core.api.ReferenceDataService;
+import name.bindul.bls.dm.core.api.ServiceFactory;
 import name.bindul.bls.dm.core.spi.Repository;
 import name.bindul.bls.dm.core.spi.RepositoryException;
 import name.bindul.bls.dm.core.spi.RepositoryLocation;
 import name.bindul.bls.dm.core.spi.RepositoryLocationType;
 import name.bindul.bls.dm.core.spi.RepositoryProvider;
 
-public class BowlingLeagueStatsImpl extends BowlingLeagueStats {
+public class BowlingLeagueStatsImpl extends BowlingLeagueStats implements ServiceImplementationSupport {
 
-	private final EventListenerSupport<BlsStateChangeListener> stateChangeListenerSupport = EventListenerSupport.create(BlsStateChangeListener.class);
+	private final EventListenerSupport<BlsStateChangeListener> stateChangeListenerSupport = EventListenerSupport
+			.create(BlsStateChangeListener.class);
+	private final EventListenerSupport<EntityChangeListener> entityChangeListenerSupport = EventListenerSupport
+			.create(EntityChangeListener.class);
 	
 	private final List<RepositoryProvider> repositoryProviders;
+	private final ServiceFactoryImpl serviceFactory = new ServiceFactoryImpl();
 	
 	private Repository repository;
 	
@@ -91,6 +99,16 @@ public class BowlingLeagueStatsImpl extends BowlingLeagueStats {
 	}
 
 	@Override
+	public void fireEntityChangeEvent(EntityChangeEvent event) {
+		entityChangeListenerSupport.fire().entityChanged(event);
+	}
+
+	@Override
+	public Repository getRepository() {
+		return repository;
+	}
+
+	@Override
 	public void addStateChangeListener(BlsStateChangeListener listener) {
 		stateChangeListenerSupport.addListener(listener);
 	}
@@ -98,5 +116,32 @@ public class BowlingLeagueStatsImpl extends BowlingLeagueStats {
 	@Override
 	public void removeStateChangeListener(BlsStateChangeListener listener) {
 		stateChangeListenerSupport.removeListener(listener);
+	}
+
+	@Override
+	public void addEntityChangeListener(EntityChangeListener listener) {
+		entityChangeListenerSupport.addListener(listener);
+	}
+
+	@Override
+	public void removeEntityChangeListener(EntityChangeListener listener) {
+		entityChangeListenerSupport.removeListener(listener);
+	}
+
+	@Override
+	public ServiceFactory getServiceFactory() {
+		return serviceFactory;
+	}
+
+	// Services
+	private class ServiceFactoryImpl implements ServiceFactory {
+
+		private ReferenceDataService refDataSvc = new ReferenceDataServiceImpl(BowlingLeagueStatsImpl.this);
+		
+		@Override
+		public ReferenceDataService getReferenceDataService() {
+			return refDataSvc;
+		}
+		
 	}
 }

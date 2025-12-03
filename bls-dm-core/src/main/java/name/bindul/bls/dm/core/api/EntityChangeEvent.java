@@ -13,14 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.api.league;
+package name.bindul.bls.dm.core.api;
 
-import java.util.List;
+import java.util.EventObject;
 
-import name.bindul.bls.dm.core.model.BowlingCenter;
+import lombok.Getter;
 
-public interface BowlingCenterService {
+@Getter
+public class EntityChangeEvent extends EventObject {
 
-	public List<BowlingCenter> getBowlingCenters();
+	private static final long serialVersionUID = 4116299154469826772L;
+
+	public enum ChangeType { CREATED, UPDATED, DELETED };
 	
+	private final ChangeType changeType;
+	private final String entityType;
+	private final String entityId;
+	
+	public EntityChangeEvent(Object source, ChangeType changeType, String entityType, String entityId) {
+		super(source);
+		this.changeType = changeType;
+		this.entityType = entityType;
+		this.entityId = entityId;
+	}
 }

@@ -41,6 +41,8 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.extern.log4j.Log4j2;
 import name.bindul.bls.dm.core.spi.Repository;
 import name.bindul.bls.dm.core.spi.RepositoryException;
+import name.bindul.bls.dm.core.spi.accessors.ReferenceDataAccessor;
+import name.bindul.bls.dm.store.sqlite.accessors.ReferenceDataAccessorImpl;
 
 @Log4j2
 public class SqlliteRepository implements Repository {
@@ -86,7 +88,12 @@ public class SqlliteRepository implements Repository {
 			dataSource = null;
 		}
 	}
-	
+		
+	@Override
+	public ReferenceDataAccessor getReferenceDataAccessor() {
+		return new ReferenceDataAccessorImpl(dataSource);
+	}
+
 	private boolean hasSchemaChanges () throws SQLException, LiquibaseException {
 		final List<ChangeSetStatus> changeSetStatuses = executeLiquibaseAction(
 				liquibase -> liquibase.getChangeSetStatuses(new Contexts(), new LabelExpression()));

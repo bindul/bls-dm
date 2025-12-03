@@ -46,4 +46,11 @@ public abstract class BowlingLeagueStats {
 	public abstract void addStateChangeListener (BlsStateChangeListener listener);
 	
 	public abstract void removeStateChangeListener (BlsStateChangeListener listener);
+	
+	public abstract void addEntityChangeListener (EntityChangeListener listener);
+	
+	public abstract void removeEntityChangeListener (EntityChangeListener listener);
+	
+	public abstract ServiceFactory getServiceFactory();
+	
 }

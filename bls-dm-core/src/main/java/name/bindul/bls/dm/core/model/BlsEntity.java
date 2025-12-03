@@ -15,12 +15,6 @@
  */
 package name.bindul.bls.dm.core.model;
 
-import lombok.Data;
+public interface BlsEntity {
 
-@Data
-public class BowlingCenter implements BlsEntity {
-	private String id;
-	private String name;
-	private boolean active;
-	private String location;
 }

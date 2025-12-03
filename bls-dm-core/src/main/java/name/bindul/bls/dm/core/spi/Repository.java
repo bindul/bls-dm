@@ -15,7 +15,11 @@
  */
 package name.bindul.bls.dm.core.spi;
 
+import name.bindul.bls.dm.core.spi.accessors.ReferenceDataAccessor;
+
 public interface Repository {
 
 	public void close() throws RepositoryException;
+	
+	public ReferenceDataAccessor getReferenceDataAccessor();
 }

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.model;
+package name.bindul.bls.dm.core.impl.api;
 
-import lombok.Data;
+import name.bindul.bls.dm.core.api.EntityChangeEvent;
+import name.bindul.bls.dm.core.spi.Repository;
 
-@Data
-public class BowlingCenter implements BlsEntity {
-	private String id;
-	private String name;
-	private boolean active;
-	private String location;
+public interface ServiceImplementationSupport {
+
+	void fireEntityChangeEvent (EntityChangeEvent event);
+	
+	Repository getRepository();
 }
