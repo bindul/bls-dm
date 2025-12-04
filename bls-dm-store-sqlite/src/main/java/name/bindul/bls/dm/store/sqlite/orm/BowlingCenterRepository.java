@@ -13,17 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.model;
+package name.bindul.bls.dm.store.sqlite.orm;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Repository;
 
-@Data @Builder @NoArgsConstructor @AllArgsConstructor
-public class BowlingCenter implements BlsEntity {
-	private String id;
-	private String name;
-	private boolean active;
-	private String location;
+@Repository
+public interface BowlingCenterRepository extends CrudRepository<BowlingCenterStore, String> {
+
+	
 }

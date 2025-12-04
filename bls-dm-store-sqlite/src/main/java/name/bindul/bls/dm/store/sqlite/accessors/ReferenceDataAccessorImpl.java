@@ -15,52 +15,56 @@
  */
 package name.bindul.bls.dm.store.sqlite.accessors;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.DataSource;
+import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 
 import name.bindul.bls.dm.core.model.BowlingCenter;
 import name.bindul.bls.dm.core.spi.RepositoryException;
 import name.bindul.bls.dm.core.spi.accessors.ReferenceDataAccessor;
-import name.bindul.bls.dm.store.sqlite.daos.BowlingCenterDao;
+import name.bindul.bls.dm.store.sqlite.orm.BowlingCenterRepository;
+import name.bindul.bls.dm.store.sqlite.orm.BowlingCenterRepository_;
+import name.bindul.bls.dm.store.sqlite.orm.BowlingCenterStore;
 
 public class ReferenceDataAccessorImpl implements ReferenceDataAccessor {
 	
-	private final DataSource ds;
-	private final BowlingCenterDao dao;
+	private final SessionFactory sessionFactory;
 	
-	public ReferenceDataAccessorImpl (DataSource ds) {
-		this.ds = ds;
-		this.dao = new BowlingCenterDao();
+	public ReferenceDataAccessorImpl (SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 	@Override
 	public List<BowlingCenter> getBowlingCenters() throws RepositoryException {
-		try (Connection con = ds.getConnection()) {
-			return dao.list(con);
-		} catch (SQLException e) {
-			throw new RepositoryException(e.getMessage(), e);
+		try (StatelessSession session = sessionFactory.openStatelessSession()) {
+			final BowlingCenterRepository bcr = new BowlingCenterRepository_(session);
+			return bcr.findAll().map(BowlingCenterStore::toModel).toList();
 		}
 	}
 
 	@Override
 	public void createBowlingCenter(BowlingCenter bowlingCenter) throws RepositoryException {
-		// TODO Auto-generated method stub
-
+		sessionFactory.inStatelessTransaction(session -> {
+			final BowlingCenterStore bcs = BowlingCenterStore.fromModel(bowlingCenter);
+			session.insert(bcs);
+		});
 	}
 
 	@Override
 	public void updateBowlingCenter(BowlingCenter bowlingCenter) throws RepositoryException {
-		// TODO Auto-generated method stub
-
+		sessionFactory.inStatelessTransaction(session -> {
+			final BowlingCenterStore bcs = BowlingCenterStore.fromModel(bowlingCenter);
+			session.update(bcs);
+		});
 	}
 
 	@Override
 	public void deleteBowlingCenter(String id) throws RepositoryException {
-		// TODO Auto-generated method stub
-
+		sessionFactory.inStatelessTransaction(session -> {
+			final BowlingCenterStore bcs = session.get(BowlingCenterStore.class, id);
+			session.delete(bcs);
+		});
 	}
 
 }

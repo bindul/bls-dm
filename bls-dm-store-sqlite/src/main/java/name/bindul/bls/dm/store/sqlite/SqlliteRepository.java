@@ -26,6 +26,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.jpa.HibernatePersistenceConfiguration;
+import org.hibernate.tool.schema.Action;
 import org.sqlite.JDBC;
 import org.sqlite.javax.SQLiteConnectionPoolDataSource;
 
@@ -54,6 +57,8 @@ public class SqlliteRepository implements Repository {
 	private final boolean newRepository;
 	
 	private SQLiteConnectionPoolDataSource dataSource;
+
+	private SessionFactory sessionFactory;
 	
 	public SqlliteRepository (File repositoryLocation, boolean newRepository) {
 		this.repositoryLocation = repositoryLocation;
@@ -79,6 +84,7 @@ public class SqlliteRepository implements Repository {
 				throw new RepositoryException("Error executing liquibase DB changesets: " + e.getMessage(), e);
 			}
 		}
+		setupHibernate();
 	}
 
 	@Override
@@ -87,11 +93,23 @@ public class SqlliteRepository implements Repository {
 			// Does not seem to have a close function!
 			dataSource = null;
 		}
+		if (null != sessionFactory) {
+			sessionFactory.close();
+			sessionFactory = null;
+		}
 	}
 		
 	@Override
 	public ReferenceDataAccessor getReferenceDataAccessor() {
-		return new ReferenceDataAccessorImpl(dataSource);
+		return new ReferenceDataAccessorImpl(sessionFactory);
+	}
+	
+	private void setupHibernate () {
+		sessionFactory = new HibernatePersistenceConfiguration("BLS", getClass())
+				.jdbcUrl(jdbcUrl)
+				.schemaToolingAction(Action.VALIDATE)
+				.showSql(true, true, true) // TODO Externalize it
+				.createEntityManagerFactory();
 	}
 
 	private boolean hasSchemaChanges () throws SQLException, LiquibaseException {

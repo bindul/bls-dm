@@ -104,6 +104,11 @@
 	  			<artifactId>log4j-api</artifactId>
 	  			<version>2.25.2</version>
 	  		</dependency>
+	  		<dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.25.2</version>
+            </dependency>
 	  		<!-- JSON Proccessing -->
 	  		<dependency>
 	  		   <groupId>com.fasterxml.jackson.core</groupId>
@@ -120,6 +125,32 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
                 <version>5.0.1</version>
+            </dependency>
+            <!-- Database - ORM -->
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-processor</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-scan-jandex</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-community-dialects</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.data</groupId>
+                <artifactId>jakarta.data-api</artifactId>
+                <version>1.0.1</version>
             </dependency>
             <!-- SWT Dependencies - Remove if not using SWT UI -->
 	  		<dependency>
@@ -155,6 +186,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<lombok.version>1.18.38</lombok.version>
 		<javafx.version>21.0.9</javafx.version> <!--  LTS versions 21, 25. 25 requires JDK min 23 -->
+		<hibernate.version>7.1.11.Final</hibernate.version>
 	</properties>
 	<modules>
 		<module>bls-dm-core</module>
