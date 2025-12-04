@@ -29,7 +29,12 @@
                         <path>
                             <groupId>org.hibernate.orm</groupId>
                             <artifactId>hibernate-processor</artifactId>
-                             <version>${hibernate.version}</version>
+                            <version>${hibernate.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version> 
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -55,6 +60,10 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
         </dependency>
   		<dependency>
   			<groupId>org.xerial</groupId>

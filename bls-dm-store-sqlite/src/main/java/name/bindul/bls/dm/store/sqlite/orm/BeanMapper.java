@@ -15,10 +15,13 @@
  */
 package name.bindul.bls.dm.store.sqlite.orm;
 
-import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.Repository;
+import org.mapstruct.Mapper;
 
-@Repository
-public interface BowlingCenterRepository extends CrudRepository<BowlingCenterTO, String> {
-	
+import name.bindul.bls.dm.core.model.BowlingCenter;
+
+@Mapper
+public interface BeanMapper {
+
+	BowlingCenter fromBowlingCenterStore (BowlingCenterTO bowlingCenterTO);
+	BowlingCenterTO toBowlingCenterStore (BowlingCenter bowlingCenter);
 }

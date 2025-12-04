@@ -19,17 +19,20 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
+import org.mapstruct.factory.Mappers;
 
 import name.bindul.bls.dm.core.model.BowlingCenter;
 import name.bindul.bls.dm.core.spi.RepositoryException;
 import name.bindul.bls.dm.core.spi.accessors.ReferenceDataAccessor;
+import name.bindul.bls.dm.store.sqlite.orm.BeanMapper;
 import name.bindul.bls.dm.store.sqlite.orm.BowlingCenterRepository;
 import name.bindul.bls.dm.store.sqlite.orm.BowlingCenterRepository_;
-import name.bindul.bls.dm.store.sqlite.orm.BowlingCenterStore;
+import name.bindul.bls.dm.store.sqlite.orm.BowlingCenterTO;
 
 public class ReferenceDataAccessorImpl implements ReferenceDataAccessor {
 	
 	private final SessionFactory sessionFactory;
+	private final BeanMapper mapper = Mappers.getMapper(BeanMapper.class);
 	
 	public ReferenceDataAccessorImpl (SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
@@ -39,30 +42,28 @@ public class ReferenceDataAccessorImpl implements ReferenceDataAccessor {
 	public List<BowlingCenter> getBowlingCenters() throws RepositoryException {
 		try (StatelessSession session = sessionFactory.openStatelessSession()) {
 			final BowlingCenterRepository bcr = new BowlingCenterRepository_(session);
-			return bcr.findAll().map(BowlingCenterStore::toModel).toList();
+			return bcr.findAll().map(mapper::fromBowlingCenterStore).toList();
 		}
 	}
 
 	@Override
 	public void createBowlingCenter(BowlingCenter bowlingCenter) throws RepositoryException {
 		sessionFactory.inStatelessTransaction(session -> {
-			final BowlingCenterStore bcs = BowlingCenterStore.fromModel(bowlingCenter);
-			session.insert(bcs);
+			session.insert(mapper.toBowlingCenterStore(bowlingCenter));
 		});
 	}
 
 	@Override
 	public void updateBowlingCenter(BowlingCenter bowlingCenter) throws RepositoryException {
 		sessionFactory.inStatelessTransaction(session -> {
-			final BowlingCenterStore bcs = BowlingCenterStore.fromModel(bowlingCenter);
-			session.update(bcs);
+			session.update(mapper.toBowlingCenterStore(bowlingCenter));
 		});
 	}
 
 	@Override
 	public void deleteBowlingCenter(String id) throws RepositoryException {
 		sessionFactory.inStatelessTransaction(session -> {
-			final BowlingCenterStore bcs = session.get(BowlingCenterStore.class, id);
+			final BowlingCenterTO bcs = session.get(BowlingCenterTO.class, id);
 			session.delete(bcs);
 		});
 	}

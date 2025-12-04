@@ -26,12 +26,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import name.bindul.bls.dm.core.model.BowlingCenter;
 
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "BOWLING_CENTER")
-public class BowlingCenterStore {
+public class BowlingCenterTO {
 
 	@Id
 	@Column(name = "CENTER_ID", length = 6)
@@ -46,18 +45,5 @@ public class BowlingCenterStore {
 	
 	@Column(name = "LOCATION")
 	private String location;
-	
-	public BowlingCenter toModel () {
-		return BowlingCenter.builder().id(id).name(name).active((null != isActive) ? isActive : false)
-				.location(location).build();
-	}
-	
-	public static BowlingCenterStore fromModel(BowlingCenter model) {
-		return BowlingCenterStore.builder()
-				.id(model.getId())
-				.name(model.getName())
-				.isActive(model.isActive())
-				.location(model.getLocation())
-				.build();
-	}
+
 }

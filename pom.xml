@@ -115,6 +115,12 @@
 	  		   <artifactId>jackson-databind</artifactId>
 	  		   <version>2.20.1</version>
 	  		</dependency>
+	  		<!-- Bean Processing -->
+	  		<dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version> 
+            </dependency>
 	  		<!-- Database -->
             <dependency>
                 <groupId>org.xerial</groupId>
@@ -187,6 +193,7 @@
 		<lombok.version>1.18.38</lombok.version>
 		<javafx.version>21.0.9</javafx.version> <!--  LTS versions 21, 25. 25 requires JDK min 23 -->
 		<hibernate.version>7.1.11.Final</hibernate.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
 	</properties>
 	<modules>
 		<module>bls-dm-core</module>
