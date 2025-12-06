@@ -18,9 +18,12 @@ package name.bindul.bls.dm.core.api;
 import java.util.List;
 
 import name.bindul.bls.dm.core.impl.api.BowlingLeagueStatsImpl;
-import name.bindul.bls.dm.core.spi.RepositoryException;
-import name.bindul.bls.dm.core.spi.RepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocationType;
+import name.bindul.bls.dm.core.spi.export.DataExportException;
+import name.bindul.bls.dm.core.spi.export.DataExportLocation;
+import name.bindul.bls.dm.core.spi.export.DataExportType;
+import name.bindul.bls.dm.core.spi.repository.RepositoryException;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocationType;
 
 public abstract class BowlingLeagueStats {
 	
@@ -42,6 +45,10 @@ public abstract class BowlingLeagueStats {
 	public abstract void openRepository (RepositoryLocation existingBlsStore) throws RepositoryException;
 	
 	public abstract void closeRepository () throws RepositoryException;
+	
+	public abstract List<DataExportType> getSupportedDataExportTypes();
+	
+	public abstract void exportData(DataExportLocation exportLocation) throws DataExportException;
 
 	public abstract void addStateChangeListener (BlsStateChangeListener listener);
 	

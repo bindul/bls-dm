@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components.actions;
+package name.bindul.bls.dm.ui.jfx.components.menu.actions;
 
 import java.io.File;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.StringProperty;
-import javafx.concurrent.Task;
 import javafx.scene.Parent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import name.bindul.bls.dm.core.api.BowlingLeagueStats;
-import name.bindul.bls.dm.core.spi.RepositoryLocationType;
-import name.bindul.bls.dm.ui.jfx.context.ApplicationContext;
-import name.bindul.bls.dm.ui.jfx.helpers.ErrorDialog;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocationType;
 import name.bindul.bls.dm.ui.jfx.pref.ApplicationPreferences;
 import name.bindul.bls.dm.ui.jfx.pref.RecentRepository;
 
@@ -42,46 +38,21 @@ abstract class RepositoryLocationActionSupport {
 	protected FileChooser createFileChooser(RepositoryLocationType repositoryLocType) {
 		final FileChooser fileChooser = new FileChooser();
 		
-		final String resourceTypeName = resources.getString("repo.type." + repositoryLocType.getTypeCode());
+		final String resourceTypeName = resources.getString("repo.type." + repositoryLocType.typeCode());
 		fileChooser.setTitle(resources.getString("action.new.local.title") + " " + resourceTypeName);
 		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 		fileChooser.setInitialFileName("bls.db");
-		if (!repositoryLocType.getLocalFileExtensions().isEmpty()) {
+		if (!repositoryLocType.localFileExtensions().isEmpty()) {
 			fileChooser.getExtensionFilters().add(new ExtensionFilter(resourceTypeName + " (" 
-							+ String.join(", ", repositoryLocType.getLocalFileExtensions()) + ")",
-					repositoryLocType.getLocalFileExtensions().toArray(new String[0])));
+							+ String.join(", ", repositoryLocType.localFileExtensions()) + ")",
+					repositoryLocType.localFileExtensions().toArray(new String[0])));
 		}
 		
 		return fileChooser;
 	}
 	
-	protected void decorateRepositoryTask(final Task<Void> repositoryTask, final String resourceKeyPrefix) {
-		final StringProperty statusLabel = ApplicationContext.getInstance().getStatusLabel();
-		
-		if (null != statusLabel) {
-			statusLabel.bind(repositoryTask.messageProperty());
-			
-			repositoryTask.setOnSucceeded(e -> {
-				statusLabel.unbind();
-				statusLabel.set(null);
-			});
-		}
-			
-		repositoryTask.setOnFailed(e -> {
-			if (null != statusLabel) {
-				statusLabel.unbind();
-				statusLabel.set(resources.getString(resourceKeyPrefix + ".task.failed") + repositoryTask.getTitle());
-			}
-			final Throwable exception = repositoryTask.getException();
-			if (null != exception) {
-				ErrorDialog.showErrorDialogP(resources.getString(resourceKeyPrefix + ".error-dialog.title"), 
-						resources.getString(resourceKeyPrefix + ".error-dialog.message"), exception, parent);
-			}
-		});
-	}
-	
 	protected void addToRecentFiles(RepositoryLocationType repositoryLocType, File chosenFile) {
-		final RecentRepository recentRepo = new RecentRepository(repositoryLocType.getTypeCode(), chosenFile.getPath());
+		final RecentRepository recentRepo = new RecentRepository(repositoryLocType.typeCode(), chosenFile.getPath());
 		ApplicationPreferences.addRecentRepository(recentRepo);
 	}
 }

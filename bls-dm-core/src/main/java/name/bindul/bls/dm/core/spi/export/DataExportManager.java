@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.spi;
+package name.bindul.bls.dm.core.spi.export;
 
 import java.util.List;
 import java.util.ServiceLoader;
 
-public abstract class RepositoryProvider {
+import name.bindul.bls.dm.core.api.ServiceFactory;
+import name.bindul.bls.dm.core.spi.repository.Repository;
+
+public interface DataExportManager {
 	
-	public static List<RepositoryProvider> availableProviders () {
-		ServiceLoader<RepositoryProvider> serviceLoader = ServiceLoader.load(RepositoryProvider.class);
+	static List<DataExportManager> availableExportManagers () {
+		ServiceLoader<DataExportManager> serviceLoader = ServiceLoader.load(DataExportManager.class);
 		return serviceLoader.stream().map(p -> p.get()).toList();
 	}
-	
-	public abstract RepositoryLocationType supportedLocationType();
-	
-	public abstract boolean canOpenOrCreate(RepositoryLocation location);
 
-	public abstract Repository open(RepositoryLocation location) throws RepositoryException;
+	DataExportType supportedExportType();
 	
-	public abstract Repository create(RepositoryLocation location) throws RepositoryException;
+	boolean canExportTo (DataExportLocation location);
+	
+	void export(DataExportLocation location, ServiceFactory serviceFactory, Repository repository) throws DataExportException;
 }

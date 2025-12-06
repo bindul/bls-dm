@@ -10,11 +10,67 @@
   	<artifactId>bls-dm-export-site</artifactId>
   	<packaging>jar</packaging>
   	<name>Bowling League Stats :: Data Manager :: Data Export :: BLS Site JSON</name>
+  	<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>${dev.java.version}</source>
+                    <target>${dev.java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>com.google.auto.service</groupId>
+                            <artifactId>auto-service</artifactId>
+                            <version>${auto-service.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/resources/json-schema</sourceDirectory>
+                    <targetPackage>name.bindul.bls.dm.export.site.model</targetPackage>
+                    <annotationStyle>jackson2</annotationStyle>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+  	</build>
   	<dependencies>
-  		<dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>bls-dm-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
   			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
   		</dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+  		<dependency>
+           <groupId>com.fasterxml.jackson.core</groupId>
+           <artifactId>jackson-databind</artifactId>
+        </dependency>
   	</dependencies>
 </project>

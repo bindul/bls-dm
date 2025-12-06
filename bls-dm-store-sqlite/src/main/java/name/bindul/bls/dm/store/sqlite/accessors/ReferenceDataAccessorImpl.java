@@ -22,8 +22,8 @@ import org.hibernate.StatelessSession;
 import org.mapstruct.factory.Mappers;
 
 import name.bindul.bls.dm.core.model.BowlingCenter;
-import name.bindul.bls.dm.core.spi.RepositoryException;
-import name.bindul.bls.dm.core.spi.accessors.ReferenceDataAccessor;
+import name.bindul.bls.dm.core.spi.repository.RepositoryException;
+import name.bindul.bls.dm.core.spi.repository.accessors.ReferenceDataAccessor;
 import name.bindul.bls.dm.store.sqlite.orm.BeanMapper;
 import name.bindul.bls.dm.store.sqlite.orm.BowlingCenterRepository;
 import name.bindul.bls.dm.store.sqlite.orm.BowlingCenterRepository_;

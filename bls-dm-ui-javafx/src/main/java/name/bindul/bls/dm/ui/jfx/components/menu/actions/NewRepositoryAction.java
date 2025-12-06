@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components.actions;
+package name.bindul.bls.dm.ui.jfx.components.menu.actions;
 
 import java.io.File;
 import java.util.Optional;
@@ -27,9 +27,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import name.bindul.bls.dm.core.api.BowlingLeagueStats;
-import name.bindul.bls.dm.core.spi.RepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocation.LocalFileRepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocationType;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocationType;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation.LocalFileRepositoryLocation;
 import name.bindul.bls.dm.ui.jfx.context.ApplicationContext;
 
 public class NewRepositoryAction extends RepositoryLocationActionSupport implements EventHandler<ActionEvent> {
@@ -88,7 +88,7 @@ public class NewRepositoryAction extends RepositoryLocationActionSupport impleme
 			}
 		};
 		
-		decorateRepositoryTask(repositoryTask, "action.new.local");
+		ActionUtils.decorateRepositoryTask(repositoryTask, "action.new.local", resources, parent);
 		return repositoryTask;
 	}
 }

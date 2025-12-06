@@ -18,24 +18,22 @@ package name.bindul.bls.dm.store.sqlite;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import com.google.auto.service.AutoService;
+
 import lombok.extern.log4j.Log4j2;
-import name.bindul.bls.dm.core.spi.Repository;
-import name.bindul.bls.dm.core.spi.RepositoryException;
-import name.bindul.bls.dm.core.spi.RepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocation.LocalFileRepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocationType;
-import name.bindul.bls.dm.core.spi.RepositoryProvider;
+import name.bindul.bls.dm.core.spi.repository.Repository;
+import name.bindul.bls.dm.core.spi.repository.RepositoryException;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocationType;
+import name.bindul.bls.dm.core.spi.repository.RepositoryProvider;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation.LocalFileRepositoryLocation;
 
 @Log4j2
+@AutoService(RepositoryProvider.class)
 public class SqliteRepositoryProvider extends RepositoryProvider {
 	
-	private static final RepositoryLocationType SUPPORTED_LOC_TYPE = RepositoryLocationType.builder()
-			.typeCode("local.file.sqllite")
-			.isLocalFile(true)
-			.localFileExtensions(Arrays.asList("*.sqlite", "*.sqlite3", "*.db", "*.db3"))
-			.supportsCreateNew(true)
-			.requiresCredentials(false)
-			.build();
+	private static final RepositoryLocationType SUPPORTED_LOC_TYPE = new RepositoryLocationType("local.file.sqllite",
+			true, true, Arrays.asList("*.sqlite", "*.sqlite3", "*.db", "*.db3"), false);
 
 	public SqliteRepositoryProvider () throws RepositoryException {
 		// Validate we have JDBC driver

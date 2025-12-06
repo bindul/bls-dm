@@ -13,24 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.spi;
+package name.bindul.bls.dm.core.spi.repository;
 
-import java.io.File;
+import java.util.List;
 
-import lombok.Builder;
-import lombok.Data;
-
-public interface RepositoryLocation {
-	
-	String locationDisplayValue();
-
-	@Data @Builder
-	public static class LocalFileRepositoryLocation implements RepositoryLocation {
-		private File location;
-		
-		@Override
-		public String locationDisplayValue() {
-			return location.getPath();
-		}
-	}
+public record RepositoryLocationType (
+		String typeCode, 
+		boolean supportsCreateNew, 
+		boolean isLocalFile, 
+		List<String> localFileExtensions, 
+		boolean requiresCredentials
+		) {
 }

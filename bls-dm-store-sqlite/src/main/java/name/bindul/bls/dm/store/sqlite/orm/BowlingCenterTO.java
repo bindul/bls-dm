@@ -41,7 +41,7 @@ public class BowlingCenterTO {
 	
 	@Column(name = "IS_ACTIVE")
 	@Convert(converter = NumericBooleanConverter.class)
-	private Boolean isActive;
+	private Boolean active;
 	
 	@Column(name = "LOCATION")
 	private String location;

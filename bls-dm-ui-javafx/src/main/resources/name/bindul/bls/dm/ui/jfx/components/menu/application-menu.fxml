@@ -9,11 +9,7 @@
     fx:id="applicationMenuBar">
     <menus>
         <fx:include source="file-menu.fxml" fx:id="fileMenu"/>
-        <Menu disable="true" mnemonicParsing="false" text="%menu.export">
-            <items>
-                <MenuItem mnemonicParsing="false" onAction="#exportBlsWebsiteFormatData" text="%menu.export.bls-site" />
-            </items>
-        </Menu>
+        <fx:include source="export-menu.fxml" fx:id="exportMenu"/>
         <fx:include source="help-menu.fxml"/>
     </menus>
 </MenuBar>

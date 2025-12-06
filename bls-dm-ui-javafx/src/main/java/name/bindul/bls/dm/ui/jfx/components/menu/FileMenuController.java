@@ -27,14 +27,14 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import name.bindul.bls.dm.core.api.BowlingLeagueStats;
-import name.bindul.bls.dm.core.spi.RepositoryLocationType;
-import name.bindul.bls.dm.ui.jfx.components.actions.CloseRepositoryAction;
-import name.bindul.bls.dm.ui.jfx.components.actions.NewRepositoryAction;
-import name.bindul.bls.dm.ui.jfx.components.actions.OpenRecentRepositoryAction;
-import name.bindul.bls.dm.ui.jfx.components.actions.OpenRepositoryAction;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocationType;
+import name.bindul.bls.dm.ui.jfx.components.ParentNodeAware;
+import name.bindul.bls.dm.ui.jfx.components.dialogs.ErrorDialog;
+import name.bindul.bls.dm.ui.jfx.components.menu.actions.CloseRepositoryAction;
+import name.bindul.bls.dm.ui.jfx.components.menu.actions.NewRepositoryAction;
+import name.bindul.bls.dm.ui.jfx.components.menu.actions.OpenRecentRepositoryAction;
+import name.bindul.bls.dm.ui.jfx.components.menu.actions.OpenRepositoryAction;
 import name.bindul.bls.dm.ui.jfx.helpers.ApplicationOnCloseHandler;
-import name.bindul.bls.dm.ui.jfx.helpers.ErrorDialog;
-import name.bindul.bls.dm.ui.jfx.helpers.ParentNodeAware;
 import name.bindul.bls.dm.ui.jfx.pref.ApplicationPreferences;
 
 public class FileMenuController implements ParentNodeAware {
@@ -69,8 +69,8 @@ public class FileMenuController implements ParentNodeAware {
 				final List<RepositoryLocationType> supportedLocationTypes = bls.getSupportedRepositoryLocationTypes();
 				// Set up menus
 				supportedLocationTypes.forEach(type -> {
-					final String label = resources.getString("repo.type." + type.getTypeCode());
-					if (type.isSupportsCreateNew()) {
+					final String label = resources.getString("repo.type." + type.typeCode());
+					if (type.supportsCreateNew()) {
 						final MenuItem newRepoMenu = new MenuItem(label);
 						newRepoMenu.setOnAction(new NewRepositoryAction(bls, type, resources, parent));
 						newMenu.getItems().add(newRepoMenu);
@@ -89,8 +89,8 @@ public class FileMenuController implements ParentNodeAware {
 					flipDisabled(event.isRepositoryLoaded());
 				});
 			} catch (Exception e) {
-				ErrorDialog.showErrorDialogP(resources.getString("menu.file.init.error.title"), 
-						resources.getString("menu.file.init.error.message"), e, parent);
+				ErrorDialog.showErrorDialogP(resources.getString("menu.init.error.title"), 
+						resources.getString("menu.init.error.message"), e, parent);
 			}
 		});
 	}
@@ -103,7 +103,7 @@ public class FileMenuController implements ParentNodeAware {
 		ApplicationPreferences.getRecentRepositories()
 			.ifPresent(recentRepos -> recentRepos.forEach(
 				recent -> supportedLocationTypes.stream()
-					.filter(slt -> slt.getTypeCode().equals(recent.repositoryLocationTypeCode()))
+					.filter(slt -> slt.typeCode().equals(recent.repositoryLocationTypeCode()))
 					.findFirst()
 					.ifPresent(slt -> {
 						final MenuItem recentItem = new MenuItem(recent.location());

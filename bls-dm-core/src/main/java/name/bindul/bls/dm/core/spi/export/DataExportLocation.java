@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.spi.accessors;
+package name.bindul.bls.dm.core.spi.export;
 
-import java.util.List;
+import java.io.File;
 
-import name.bindul.bls.dm.core.model.BowlingCenter;
-import name.bindul.bls.dm.core.spi.RepositoryException;
+import lombok.Builder;
+import lombok.Data;
 
-public interface ReferenceDataAccessor {
-
-	public List<BowlingCenter> getBowlingCenters() throws RepositoryException;
+public interface DataExportLocation {
 	
-	public void createBowlingCenter (BowlingCenter bowlingCenter) throws RepositoryException;
-	
-	public void updateBowlingCenter (BowlingCenter bowlingCenter) throws RepositoryException;
-	
-	public void deleteBowlingCenter (String id) throws RepositoryException;
+	String locationDisplayValue();
+
+	@Data @Builder
+	public static class LocalDirectoryExportLocation implements DataExportLocation {
+		private File directory;
+		private boolean emptyDirectory;
+		
+		@Override
+		public String locationDisplayValue() {
+			return (null != directory) ? directory.getPath() : null;
+		}
+	}
 }

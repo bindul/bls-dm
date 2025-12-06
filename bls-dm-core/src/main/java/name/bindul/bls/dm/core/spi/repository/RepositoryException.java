@@ -13,10 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.api;
+package name.bindul.bls.dm.core.spi.repository;
 
-import name.bindul.bls.dm.core.spi.repository.accessors.ReferenceDataAccessor;
+public class RepositoryException extends Exception {
 
-public interface ReferenceDataService extends ReferenceDataAccessor { // Cheating here are not copying methods
+	private static final long serialVersionUID = -3202925729041534330L;
+
+	public RepositoryException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public RepositoryException(String message) {
+		super(message);
+	}
 
 }

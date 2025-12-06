@@ -15,10 +15,9 @@
  */
 package name.bindul.bls.dm.ui.jfx.components.menu;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
-import name.bindul.bls.dm.ui.jfx.helpers.ParentNodeAware;
+import name.bindul.bls.dm.ui.jfx.components.ParentNodeAware;
 
 public class ApplicationMenuController {
 	
@@ -31,13 +30,11 @@ public class ApplicationMenuController {
 	private ParentNodeAware fileMenuController;
 	
 	@FXML
-	public void initialize() {
-		fileMenuController.setParent(applicationMenuBar);
-	}
+	private ParentNodeAware exportMenuController;
 	
 	@FXML
-	protected void exportBlsWebsiteFormatData(ActionEvent e) {
-		// TODO Implement - this will go to its own controller
-	}
-	
+	public void initialize() {
+		fileMenuController.setParent(applicationMenuBar);
+		exportMenuController.setParent(applicationMenuBar);
+	}	
 }

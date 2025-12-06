@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components.actions;
+package name.bindul.bls.dm.ui.jfx.components.menu.actions;
 
 import java.util.ResourceBundle;
 
@@ -49,7 +49,7 @@ public class CloseRepositoryAction extends RepositoryLocationActionSupport imple
 			}
 		};
 		
-		decorateRepositoryTask(repositoryTask, "action.close");
+		ActionUtils.decorateRepositoryTask(repositoryTask, "action.close", resources, parent);
 		return repositoryTask;
 	}
 

@@ -22,8 +22,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import name.bindul.bls.dm.ui.jfx.components.dialogs.ErrorDialog;
 import name.bindul.bls.dm.ui.jfx.helpers.ApplicationOnCloseHandler;
-import name.bindul.bls.dm.ui.jfx.helpers.ErrorDialog;
 
 public class BlsDmApp extends Application {
 

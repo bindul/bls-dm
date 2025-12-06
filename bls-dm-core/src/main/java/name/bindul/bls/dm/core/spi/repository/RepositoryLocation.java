@@ -13,13 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.spi;
+package name.bindul.bls.dm.core.spi.repository;
 
-import name.bindul.bls.dm.core.spi.accessors.ReferenceDataAccessor;
+import java.io.File;
 
-public interface Repository {
+import lombok.Builder;
+import lombok.Data;
 
-	public void close() throws RepositoryException;
+public interface RepositoryLocation {
 	
-	public ReferenceDataAccessor getReferenceDataAccessor();
+	String locationDisplayValue();
+
+	@Data @Builder
+	public static class LocalFileRepositoryLocation implements RepositoryLocation {
+		private File location;
+		
+		@Override
+		public String locationDisplayValue() {
+			return location.getPath();
+		}
+	}
 }

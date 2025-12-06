@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.api;
+package name.bindul.bls.dm.core.spi.export;
 
-import name.bindul.bls.dm.core.spi.repository.accessors.ReferenceDataAccessor;
-
-public interface ReferenceDataService extends ReferenceDataAccessor { // Cheating here are not copying methods
-
+public record DataExportType(String typeCode, boolean isLocalDirectory) {
 }

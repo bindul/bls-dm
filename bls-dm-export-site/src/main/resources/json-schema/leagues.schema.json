@@ -1,0 +1,55 @@
+{
+    "$id": "https://bls.bindul.name/data/leagues.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Bowling Leagues",
+    "description": "BLS Data - Bowling Leagues",
+    "type": "array",
+    "items": {
+        "$ref": "#/$defs/season-league"
+    },
+    "minItems": 1,
+    "$defs": {
+        "season-league": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "pattern": "^\\d{4} - \\d{3}"
+                },
+                "leagues": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/league"
+                    },
+                    "minItems": 1
+                }
+            },
+            "required": ["id", "leagues"]
+        },
+        "league": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" },
+                "ongoing": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "data-loc": { "type": "string" },
+                "teams": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": { "type": "string" },
+                            "name": { "type": "string" }
+                        },
+                        "required": ["id"]
+                    },
+                    "minItems": 1
+                }
+            },
+            "required": ["id", "data-loc", "teams"]
+        }
+    }
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<DialogPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <content>
+        <GridPane hgap="5" vgap="5">
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+            <children>
+                <Label text="%action.export.dialog.export-dir" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <children>
+                        <TextField fx:id="exportDirectoryPath" prefWidth="300" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="true" onAction="#showDirChooser" text="%action.export.dialog.dir-chooser" />
+                    </children>
+                </HBox>
+                
+                <Label alignment="CENTER_RIGHT" text="%action.export.dialog.clean-dir" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <CheckBox fx:id="cleanDirectory" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            </children>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+    </content>
+   
+    <buttonTypes>
+        <ButtonType buttonData="OK_DONE" text="%action.export.dialog.button.ok" />
+        <ButtonType buttonData="CANCEL_CLOSE" text="%action.export.dialog.button.cancel" />
+   </buttonTypes>
+</DialogPane>

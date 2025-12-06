@@ -4,6 +4,6 @@
     fx:controller="name.bindul.bls.dm.ui.jfx.components.menu.HelpMenuController"
     mnemonicParsing="false" text="%menu.help">
     <items>
-        <MenuItem mnemonicParsing="false" onAction="#showAbout" text="%menu.help.about" />
+        <MenuItem onAction="#showAbout" text="%menu.help.about" />
     </items>
 </Menu>

@@ -42,9 +42,9 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.extern.log4j.Log4j2;
-import name.bindul.bls.dm.core.spi.Repository;
-import name.bindul.bls.dm.core.spi.RepositoryException;
-import name.bindul.bls.dm.core.spi.accessors.ReferenceDataAccessor;
+import name.bindul.bls.dm.core.spi.repository.Repository;
+import name.bindul.bls.dm.core.spi.repository.RepositoryException;
+import name.bindul.bls.dm.core.spi.repository.accessors.ReferenceDataAccessor;
 import name.bindul.bls.dm.store.sqlite.accessors.ReferenceDataAccessorImpl;
 
 @Log4j2

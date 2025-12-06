@@ -13,21 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.spi;
+package name.bindul.bls.dm.core.spi.export;
 
-import java.util.List;
+public class DataExportException extends Exception {
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+	private static final long serialVersionUID = 5515671023931248369L;
 
-@AllArgsConstructor @Getter @ToString @EqualsAndHashCode @Builder
-public class RepositoryLocationType {
-	private final String typeCode;
-	private boolean supportsCreateNew;
-	private boolean isLocalFile;
-	private List<String> localFileExtensions;
-	private boolean requiresCredentials;
+	public DataExportException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public DataExportException(String message) {
+		super(message);
+	}
 }

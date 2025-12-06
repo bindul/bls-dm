@@ -27,11 +27,15 @@ import name.bindul.bls.dm.core.api.EntityChangeEvent;
 import name.bindul.bls.dm.core.api.EntityChangeListener;
 import name.bindul.bls.dm.core.api.ReferenceDataService;
 import name.bindul.bls.dm.core.api.ServiceFactory;
-import name.bindul.bls.dm.core.spi.Repository;
-import name.bindul.bls.dm.core.spi.RepositoryException;
-import name.bindul.bls.dm.core.spi.RepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocationType;
-import name.bindul.bls.dm.core.spi.RepositoryProvider;
+import name.bindul.bls.dm.core.spi.export.DataExportException;
+import name.bindul.bls.dm.core.spi.export.DataExportLocation;
+import name.bindul.bls.dm.core.spi.export.DataExportManager;
+import name.bindul.bls.dm.core.spi.export.DataExportType;
+import name.bindul.bls.dm.core.spi.repository.Repository;
+import name.bindul.bls.dm.core.spi.repository.RepositoryException;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocationType;
+import name.bindul.bls.dm.core.spi.repository.RepositoryProvider;
 
 public class BowlingLeagueStatsImpl extends BowlingLeagueStats implements ServiceImplementationSupport {
 
@@ -41,12 +45,14 @@ public class BowlingLeagueStatsImpl extends BowlingLeagueStats implements Servic
 			.create(EntityChangeListener.class);
 	
 	private final List<RepositoryProvider> repositoryProviders;
+	private final List<DataExportManager> dataExportManagers;
 	private final ServiceFactoryImpl serviceFactory = new ServiceFactoryImpl();
 	
 	private Repository repository;
 	
 	public BowlingLeagueStatsImpl () {
 		this.repositoryProviders = RepositoryProvider.availableProviders();
+		this.dataExportManagers = DataExportManager.availableExportManagers();
 	}
 	
 	@Override
@@ -96,6 +102,20 @@ public class BowlingLeagueStatsImpl extends BowlingLeagueStats implements Servic
 					new BlsStateChangeEvent(this, 
 							isRepositoryConnected(), 
 							(null != location) ? location.locationDisplayValue() : null));
+	}
+
+	@Override
+	public List<DataExportType> getSupportedDataExportTypes() {
+		return dataExportManagers.stream().map(DataExportManager::supportedExportType).toList();
+	}
+
+	@Override
+	public void exportData(DataExportLocation exportLocation) throws DataExportException {
+		final DataExportManager dem = dataExportManagers.stream()
+				.filter(t -> t.canExportTo(exportLocation))
+				.findFirst()
+				.orElseThrow(() -> new DataExportException("Unable to find a export proider for the location selected"));
+		dem.export(exportLocation, getServiceFactory(), getRepository());
 	}
 
 	@Override

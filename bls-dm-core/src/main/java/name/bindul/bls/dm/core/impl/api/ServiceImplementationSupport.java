@@ -16,7 +16,7 @@
 package name.bindul.bls.dm.core.impl.api;
 
 import name.bindul.bls.dm.core.api.EntityChangeEvent;
-import name.bindul.bls.dm.core.spi.Repository;
+import name.bindul.bls.dm.core.spi.repository.Repository;
 
 public interface ServiceImplementationSupport {
 

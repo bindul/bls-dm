@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.api;
+package name.bindul.bls.dm.core.spi.repository;
 
 import name.bindul.bls.dm.core.spi.repository.accessors.ReferenceDataAccessor;
 
-public interface ReferenceDataService extends ReferenceDataAccessor { // Cheating here are not copying methods
+public interface Repository {
 
+	public void close() throws RepositoryException;
+	
+	public ReferenceDataAccessor getReferenceDataAccessor();
 }

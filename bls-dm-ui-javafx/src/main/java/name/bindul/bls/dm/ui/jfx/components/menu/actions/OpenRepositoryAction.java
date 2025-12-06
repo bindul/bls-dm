@@ -13,21 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components.actions;
+package name.bindul.bls.dm.ui.jfx.components.menu.actions;
 
 import java.io.File;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
+import lombok.extern.log4j.Log4j2;
 import name.bindul.bls.dm.core.api.BowlingLeagueStats;
-import name.bindul.bls.dm.core.spi.RepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocation.LocalFileRepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocationType;
+import name.bindul.bls.dm.core.model.BowlingCenter;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocationType;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation.LocalFileRepositoryLocation;
 import name.bindul.bls.dm.ui.jfx.context.ApplicationContext;
 
+@Log4j2
 public class OpenRepositoryAction extends RepositoryLocationActionSupport implements EventHandler<ActionEvent> {
 	
 	protected final RepositoryLocationType repositoryLocType;
@@ -50,10 +54,10 @@ public class OpenRepositoryAction extends RepositoryLocationActionSupport implem
 		final RepositoryLocation repoLocation = chooseRepositoryLocation();
 		
 		if (null != repoLocation) {
-			final Task<Void> newRepositoryTask = createOpenRepositoryTask(repoLocation);
+			final Task<Void> openRepositoryTask = createOpenRepositoryTask(repoLocation);
 			
 			addToRecentFiles(repositoryLocType, ((LocalFileRepositoryLocation) repoLocation).getLocation());
-			ApplicationContext.getInstance().getExecutorService().execute(newRepositoryTask);
+			ApplicationContext.getInstance().getExecutorService().execute(openRepositoryTask);
 		}
 	}
 
@@ -72,12 +76,24 @@ public class OpenRepositoryAction extends RepositoryLocationActionSupport implem
 				updateTitle(resources.getString("action.open.local.task.title"));
 				updateMessage(resources.getString("action.open.local.task.in-progress") + repoLocation.locationDisplayValue());
 				bls.openRepository(repoLocation);
+				
+				// TODO - Delete later
+				try {
+					List<BowlingCenter> bcs = bls.getServiceFactory().getReferenceDataService().getBowlingCenters();
+					System.out.println(bcs);
+				} catch (Exception e) {
+					log.warn("Error in data access: {}", e.getMessage(), e);
+					e.printStackTrace();
+					throw e;
+				}
+				// TODO - End delete later
+				
 				updateMessage(resources.getString("action.open.local.task.completed") + repoLocation.locationDisplayValue());
 				return null;
 			}
 		};
 		
-		decorateRepositoryTask(repositoryTask, "action.open.local");
+		ActionUtils.decorateRepositoryTask(repositoryTask, "action.open.local", resources, parent);
 		return repositoryTask;
 	}
 

@@ -5,20 +5,20 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 
-<Menu mnemonicParsing="false" text="%menu.file" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+<Menu text="%menu.file" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
     fx:controller="name.bindul.bls.dm.ui.jfx.components.menu.FileMenuController">
     <items>
-        <Menu fx:id="newMenu" disable="true" mnemonicParsing="false" text="%menu.file.new" />
-        <Menu fx:id="openMenu" disable="true" mnemonicParsing="false" text="%menu.file.open" />
-        <Menu fx:id="recentRepositoriesMenu" disable="true" mnemonicParsing="false" text="%menu.file.recent" />
+        <Menu fx:id="newMenu" disable="true" text="%menu.file.new" />
+        <Menu fx:id="openMenu" disable="true" text="%menu.file.open" />
+        <Menu fx:id="recentRepositoriesMenu" disable="true" text="%menu.file.recent" />
         <SeparatorMenuItem mnemonicParsing="false" />
-        <MenuItem fx:id="closeRepository" disable="true" mnemonicParsing="false" onAction="#handleCloseRepository" text="%menu.file.close">
+        <MenuItem fx:id="closeRepository" disable="true" onAction="#handleCloseRepository" text="%menu.file.close">
             <accelerator>
                 <KeyCodeCombination alt="UP" code="W" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
             </accelerator>
         </MenuItem>
         <SeparatorMenuItem mnemonicParsing="false" />
-        <MenuItem mnemonicParsing="false" onAction="#handleExit" text="%menu.file.exit">
+        <MenuItem onAction="#handleExit" text="%menu.file.exit">
             <accelerator>
                 <KeyCodeCombination alt="UP" code="X" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
             </accelerator>

@@ -19,9 +19,9 @@ import java.util.List;
 
 import name.bindul.bls.dm.core.api.ReferenceDataService;
 import name.bindul.bls.dm.core.model.BowlingCenter;
-import name.bindul.bls.dm.core.spi.Repository;
-import name.bindul.bls.dm.core.spi.RepositoryException;
-import name.bindul.bls.dm.core.spi.accessors.ReferenceDataAccessor;
+import name.bindul.bls.dm.core.spi.repository.Repository;
+import name.bindul.bls.dm.core.spi.repository.RepositoryException;
+import name.bindul.bls.dm.core.spi.repository.accessors.ReferenceDataAccessor;
 
 public class ReferenceDataServiceImpl implements ReferenceDataService {
 

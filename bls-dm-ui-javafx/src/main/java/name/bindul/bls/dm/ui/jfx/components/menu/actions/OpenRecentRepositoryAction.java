@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.ui.jfx.components.actions;
+package name.bindul.bls.dm.ui.jfx.components.menu.actions;
 
 import java.io.File;
 import java.util.ResourceBundle;
 
 import javafx.scene.Parent;
 import name.bindul.bls.dm.core.api.BowlingLeagueStats;
-import name.bindul.bls.dm.core.spi.RepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocation.LocalFileRepositoryLocation;
-import name.bindul.bls.dm.core.spi.RepositoryLocationType;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocationType;
+import name.bindul.bls.dm.core.spi.repository.RepositoryLocation.LocalFileRepositoryLocation;
 
 public class OpenRecentRepositoryAction extends OpenRepositoryAction {
 

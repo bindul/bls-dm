@@ -13,18 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.spi;
+package name.bindul.bls.dm.core.spi.repository.accessors;
 
-public class RepositoryException extends Exception {
+import java.util.List;
 
-	private static final long serialVersionUID = -3202925729041534330L;
+import name.bindul.bls.dm.core.model.BowlingCenter;
+import name.bindul.bls.dm.core.spi.repository.RepositoryException;
 
-	public RepositoryException(String message, Throwable cause) {
-		super(message, cause);
-	}
+public interface ReferenceDataAccessor {
 
-	public RepositoryException(String message) {
-		super(message);
-	}
-
+	public List<BowlingCenter> getBowlingCenters() throws RepositoryException;
+	
+	public void createBowlingCenter (BowlingCenter bowlingCenter) throws RepositoryException;
+	
+	public void updateBowlingCenter (BowlingCenter bowlingCenter) throws RepositoryException;
+	
+	public void deleteBowlingCenter (String id) throws RepositoryException;
 }
