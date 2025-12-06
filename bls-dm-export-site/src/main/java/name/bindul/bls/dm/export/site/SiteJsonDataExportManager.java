@@ -42,7 +42,9 @@ import name.bindul.bls.dm.core.spi.export.DataExportType;
 import name.bindul.bls.dm.core.spi.repository.Repository;
 import name.bindul.bls.dm.core.spi.repository.RepositoryException;
 import name.bindul.bls.dm.export.site.model.League;
-import name.bindul.bls.dm.export.site.model.SeasonLeague;
+import name.bindul.bls.dm.export.site.model.LeaguesIndexSchema;
+import name.bindul.bls.dm.export.site.model.Location;
+import name.bindul.bls.dm.export.site.model.Season;
 import name.bindul.bls.dm.export.site.model.Team;
 
 @Log4j2
@@ -87,25 +89,32 @@ public class SiteJsonDataExportManager implements DataExportManager {
 	}
 
 	private void createLeagueFile(File destDir, ServiceFactory serviceFactory) throws DataExportException {
-		List<SeasonLeague> seasonLeagues = new ArrayList<>();
+		LeaguesIndexSchema leagueSchema = new LeaguesIndexSchema();
+		List<Season> seasons = new ArrayList<>();
+		leagueSchema.setSeasons(seasons);
 		
 		// TODO Temporary code, change it
 		try {
 			serviceFactory.getReferenceDataService().getBowlingCenters().forEach(bc -> {
-				final SeasonLeague sl = new SeasonLeague();
-				sl.setId("2025 - 26");
+				final Season season = new Season();
+				season.setId("2025-26");
 				
 				final League league = new League();
-				sl.setLeagues(Arrays.asList(league));
+				season.setLeagues(Arrays.asList(league));
 				league.setId("2526-ARAPBC-Beer-Winter");
 				league.setName("Summer Beer");
+				
+				final Location location = new Location();
+				location.setId(bc.getId());
+				location.setName(bc.getName());
+				league.setLocation(location);
 				
 				final Team team = new Team();
 				team.setId("BEER-234");
 				team.setName("Pins Go Boom!");
 				league.setTeams(Arrays.asList(team));
 				
-				seasonLeagues.add(sl);
+				seasons.add(season);
 			});
 		} catch (RepositoryException e) {
 			throw new DataExportException("Error getting data for league file: " + e.getMessage(), e);
@@ -115,7 +124,7 @@ public class SiteJsonDataExportManager implements DataExportManager {
 		
 		final ObjectMapper om = new ObjectMapper();
 		try {
-			om.writer().writeValue(destinFile, seasonLeagues);
+			om.writer().writeValue(destinFile, leagueSchema);
 		} catch (IOException e) {
 			throw new DataExportException("Error writing destination file: " + e.getMessage(), e);
 		}

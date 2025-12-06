@@ -1,0 +1,29 @@
+{
+    "$id": "https://bls.bindul.name/data/players-index.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Players",
+    "description": "BLS Data - Players",
+    "type": "object",
+    "properties": {
+        "bls-version": { "$ref": "types.schema.json#/$defs/bls-version" },
+        "players": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/player"
+            },
+            "minItems": 1
+        }
+    },
+    "required": ["bls-version", "players"],
+    "$defs": {
+        "player": {
+            "type": "object",
+            "properties": {
+                "id": { "$ref": "types.schema.json#/$defs/player-id" },
+                "name": { "type": "string" },
+                "data-loc": { "type": "string" }
+            },
+            "required": ["id", "name"]
+        }
+    }
+}

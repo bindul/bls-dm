@@ -1,0 +1,17 @@
+{
+    "$id": "https://bls.bindul.name/data/index.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Bowling League Stats Index",
+    "description": "BLS Data - Site Index",
+    "type": "object",
+    "properties": {
+        "bls-version": { "$ref": "types.schema.json#/$defs/bls-version" },
+        "leagues-index": {
+            "type": "string"
+        },
+        "players-index": {
+            "type": "string"
+        }
+    },
+    "required": ["bls-version", "leagues-index", "players-index"]
+}

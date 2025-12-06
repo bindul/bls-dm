@@ -1,20 +1,27 @@
 {
-    "$id": "https://bls.bindul.name/data/leagues.schema.json",
+    "$id": "https://bls.bindul.name/data/leagues-index.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Bowling Leagues",
     "description": "BLS Data - Bowling Leagues",
-    "type": "array",
-    "items": {
-        "$ref": "#/$defs/season-league"
+    "type": "object",
+    "properties": {
+        "bls-version": { "$ref": "types.schema.json#/$defs/bls-version" },
+        "seasons": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/season"
+            },
+            "minItems": 1
+        }
     },
-    "minItems": 1,
+    "required": ["bls-version", "seasons"],
     "$defs": {
-        "season-league": {
+        "season": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "string",
-                    "pattern": "^\\d{4} - \\d{3}"
+                    "pattern": "^\\d{4}-\\d{2}$"
                 },
                 "leagues": {
                     "type": "array",
@@ -35,6 +42,9 @@
                     "type": "boolean",
                     "default": true
                 },
+                "location": {
+                    "$ref": "#/$defs/location"
+                },
                 "data-loc": { "type": "string" },
                 "teams": {
                     "type": "array",
@@ -49,7 +59,15 @@
                     "minItems": 1
                 }
             },
-            "required": ["id", "data-loc", "teams"]
+            "required": ["id", "name", "data-loc", "teams"]
+        },
+        "location": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" }
+            },
+            "required": ["id", "name"]
         }
     }
 }

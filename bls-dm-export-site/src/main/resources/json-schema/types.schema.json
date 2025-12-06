@@ -1,0 +1,14 @@
+{
+    "$id": "https://bls.bindul.name/data/leagues.schema.json",
+    "$defs": {
+        "bls-version": {
+            "type": "string",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:\\.(0|[1-9]\\d*))$",
+            "default": "1.0"
+        },
+        "player-id" : {
+            "type": "string",
+            "pattern": "^[a-z]{2}[0-9]{1}$"
+        }
+    }
+}
