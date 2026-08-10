@@ -48,16 +48,12 @@ public class ReferenceDataAccessorImpl implements ReferenceDataAccessor {
 
 	@Override
 	public void createBowlingCenter(BowlingCenter bowlingCenter) throws RepositoryException {
-		sessionFactory.inStatelessTransaction(session -> {
-			session.insert(mapper.toBowlingCenterStore(bowlingCenter));
-		});
+		sessionFactory.inStatelessTransaction(session -> session.insert(mapper.toBowlingCenterStore(bowlingCenter)));
 	}
 
 	@Override
 	public void updateBowlingCenter(BowlingCenter bowlingCenter) throws RepositoryException {
-		sessionFactory.inStatelessTransaction(session -> {
-			session.update(mapper.toBowlingCenterStore(bowlingCenter));
-		});
+		sessionFactory.inStatelessTransaction(session -> session.update(mapper.toBowlingCenterStore(bowlingCenter)));
 	}
 
 	@Override
