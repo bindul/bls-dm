@@ -1,0 +1,159 @@
+{
+  "attributes": ["SERIES_GAME", "HANDICAP_GAME"],
+  "frames": [
+    {
+      "frameNumber": 1,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 7
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 3
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 2,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 10
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 3,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 8
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 1
+        }
+      ],
+      "rawScore": 9,
+      "frameScore": 9,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 4,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 9
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 1
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 5,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 10
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 6,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 6
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 2
+        }
+      ],
+      "rawScore": 8,
+      "frameScore": 8,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 7,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 5
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 5
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 8,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 10
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 9,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 7
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 2
+        }
+      ],
+      "rawScore": 9,
+      "frameScore": 9,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 10,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 10
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 10
+        },
+        {
+          "rollNumber": 3,
+          "pinsKnockedDown": 10
+        }
+      ],
+      "rawScore": 30,
+      "frameScore": 30,
+      "cumulativeScore": 0
+    }
+  ],
+  "scratchScore": 165,
+  "handicap": 15
+}

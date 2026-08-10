@@ -1,0 +1,173 @@
+{
+  "attributes": ["SERIES_GAME"],
+  "frames": [
+    {
+      "frameNumber": 1,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 10,
+          "pinsStanding": []
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 2,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 5,
+          "pinsStanding": [1, 6, 7, 8, 9, 10]
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 5,
+          "pinsStanding": []
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 3,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 6,
+          "pinsStanding": [5, 8, 9, 10]
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 2,
+          "pinsStanding": [8, 9]
+        }
+      ],
+      "rawScore": 8,
+      "frameScore": 8,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 4,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 10,
+          "pinsStanding": []
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 5,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 0,
+          "pinsStanding": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 5,
+          "pinsStanding": [6, 7, 8, 9, 10]
+        }
+      ],
+      "rawScore": 5,
+      "frameScore": 5,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 6,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 10,
+          "pinsStanding": []
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 7,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 3,
+          "pinsStanding": [1, 2, 6, 7, 8, 9, 10]
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 7,
+          "pinsStanding": []
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 8,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 4,
+          "pinsStanding": [1, 5, 6, 7, 8, 10]
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 5,
+          "pinsStanding": []
+        }
+      ],
+      "rawScore": 9,
+      "frameScore": 9,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 9,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 10,
+          "pinsStanding": []
+        }
+      ],
+      "rawScore": 10,
+      "frameScore": 0,
+      "cumulativeScore": 0
+    },
+    {
+      "frameNumber": 10,
+      "rolls": [
+        {
+          "rollNumber": 1,
+          "pinsKnockedDown": 10,
+          "pinsStanding": []
+        },
+        {
+          "rollNumber": 2,
+          "pinsKnockedDown": 10,
+          "pinsStanding": []
+        },
+        {
+          "rollNumber": 3,
+          "pinsKnockedDown": 8,
+          "pinsStanding": [1, 9]
+        }
+      ],
+      "rawScore": 28,
+      "frameScore": 28,
+      "cumulativeScore": 0
+    }
+  ],
+  "scratchScore": 158,
+  "handicap": 0
+}
+
