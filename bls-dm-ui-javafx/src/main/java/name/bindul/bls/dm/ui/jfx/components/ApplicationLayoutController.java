@@ -15,12 +15,43 @@
  */
 package name.bindul.bls.dm.ui.jfx.components;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TabPane;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import name.bindul.bls.dm.ui.jfx.components.entityeditors.EntityEditorContainer;
+import name.bindul.bls.dm.ui.jfx.components.toolbar.ToolbarController;
 
-public class ApplicationLayoutController {
+public class ApplicationLayoutController implements EntityEditorContainer {
 
+	// This is a special injection by @FXML. The fx:id in the fxml is toolbar, but the field has 'Controller' 
+	// added to it - then it injects the controller rather than the node.
 	@FXML
-	private TabPane tabContentContainer;
+	private ToolbarController toolbarController;
 	
+	@FXML
+	private Pane mainContent;
+	
+	@FXML
+	private Stage stage;
+	
+	@FXML
+	public void initialize() {
+		toolbarController.setEditorContainer(this);
+	}
+
+	@Override
+	public Window getParentWindow() {
+		return stage.getOwner();
+	}
+
+	@Override
+	public void loadEditor(Node editor) {
+		// TODO Load FXML heref up
+		final ObservableList<Node> children = mainContent.getChildren();
+		children.clear();
+		children.add(editor);
+	}
 }

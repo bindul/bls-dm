@@ -80,7 +80,7 @@ public class OpenRepositoryAction extends RepositoryLocationActionSupport implem
 				// TODO - Delete later
 				try {
 					List<BowlingCenter> bcs = bls.getServiceFactory().getReferenceDataService().getBowlingCenters();
-					System.out.println(bcs);
+					log.debug("Loaded bowling centers: {}", bcs);
 				} catch (Exception e) {
 					log.warn("Error in data access: {}", e.getMessage(), e);
 					e.printStackTrace();

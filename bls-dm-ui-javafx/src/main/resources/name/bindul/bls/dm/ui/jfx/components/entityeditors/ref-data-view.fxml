@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<SplitPane orientation="HORIZONTAL" dividerPositions="0.3" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="name.bindul.bls.dm.ui.jfx.components.entityeditors.RefDataViewController" fx:id="view">
+   <items>
+      <VBox>
+         <children>
+            <TreeView VBox.vgrow="ALWAYS" fx:id="itemList"/>
+         </children>
+      </VBox>
+      <AnchorPane fx:id="contentPane"/>
+   </items>
+</SplitPane>

@@ -20,7 +20,7 @@ import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import name.bindul.bls.dm.ui.jfx.components.editors.EntityEditor;
+import name.bindul.bls.dm.ui.jfx.components.entityeditors.EntityEditor;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class EntityEditorRegistry {
