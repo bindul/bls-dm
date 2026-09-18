@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.model.score;
+package name.bindul.bls.dm.core.model.scoreorig;
 
 import java.util.HashMap;
 import java.util.Map;

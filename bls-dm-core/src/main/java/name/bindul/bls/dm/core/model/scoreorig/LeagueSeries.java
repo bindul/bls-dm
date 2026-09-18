@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.model;
+package name.bindul.bls.dm.core.model.scoreorig;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
- * Calulates, holds or stores some level of statistics for the game, player, league, etc.
- * The statistics can be calculated on the fly or stored in a database for later retrieval.
+ * Represents a series of bowling games that are part of a league. 
+ * A league series consists of multiple games played by a player in a league setting.
  */
-public interface BlsStatsHolder {
+@Data @ToString(callSuper = true) @EqualsAndHashCode(callSuper = true)
+public class LeagueSeries extends Series {
 
-	void calculateStats(boolean forceRecalculate);
+	private String leagueId; // Identifier for the league
 }

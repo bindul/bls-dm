@@ -46,16 +46,16 @@ public class PinsStanding {
      * [Index - 1] matches the pin number (1-10).
      */
     private static final int[][] USBC_SPLIT_PIN_ADJACENCY = {
-        {2, 3},              // Pin 1 touches 2, 3
-        {4, 5},        // Pin 2 touches 1, 3, 4, 5
-        {5, 6},        // Pin 3 touches 1, 2, 5, 6
-        {7, 8},        // Pin 4 touches 2, 5, 7, 8
-        {8, 9},  // Pin 5 touches 2, 3, 4, 6, 8, 9
-        {9, 10},       // Pin 6 touches 3, 5, 9, 10
-        {},              // Pin 7 touches 4, 8
-        {},        // Pin 8 touches 4, 5, 7, 9
-        {},       // Pin 9 touches 5, 6, 8, 10
-        {}               // Pin 10 touches 6, 9
+        {2, 3},     // Pin 1 touches 2, 3
+        {4, 5},     // Pin 2 touches 4, 5
+        {5, 6},     // Pin 3 touches 5, 6
+        {7, 8},     // Pin 4 touches 7, 8
+        {8, 9},     // Pin 5 touches 8, 9
+        {9, 10},    // Pin 6 touches 9, 10
+        {},         // Pin 7
+        {},         // Pin 8
+        {},         // Pin 9
+        {}          // Pin 10
     };
 	
 	/**

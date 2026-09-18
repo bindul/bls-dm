@@ -15,56 +15,96 @@
  */
 package name.bindul.bls.dm.core.model.score;
 
-import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Delegate;
 import name.bindul.bls.dm.core.model.BlsEntity;
-import name.bindul.bls.dm.core.model.BlsStatsHolder;
 
-/**
- * Represents a single bowling game.
- */
 @Data
-public class Game implements BlsEntity, BlsStatsHolder, Iterable<Frame> {
-	
-	public enum GameAttribute {
-		SERIES_GAME, // Game is part of a series
-		HANDICAP_GAME, // Game is a handicap game
-	}
+public class Game implements BlsEntity, Iterable<Frame> {
 
-	 //TODO Lane conditions for the game, e.g., house shot, sport shot, etc.
-	
-	private EnumSet<GameAttribute> attributes; // Type of the game
-	private List<Frame> frames; // List of 10 frames in the game
-	private int scratchScore; // Total score without handicaps
-	@Delegate @Getter(value = AccessLevel.PRIVATE) @Setter(value = AccessLevel.PRIVATE)
-    private ScoreLabelColl scoreLabels = new ScoreLabelColl(ScoreComponent.GAME);
-	
-	// Only applicable for handicap games
-	private int handicap; // Handicap value for the game
-	
-	public int getTotalScore() {
-		if (attributes != null && attributes.contains(GameAttribute.HANDICAP_GAME)) {
-			return scratchScore + handicap;
-		}
-		return scratchScore;
-	}
-	
-    @Override
-    public Iterator<Frame> iterator() {
-        // TODO Auto-generated method stub
-        return null;
+    private String playerId; // Unique identifier for the player
+    private String gameId; // Unique identifier for the game
+
+    @Setter(value = AccessLevel.PRIVATE)
+    private List<Frame> frames = new ArrayList<>(10);
+    private int scratchScore; // Total score without handicaps
+    
+    private boolean isHandicapped; // Indicates if the game is a handicap game
+    private int handicap; // Handicap value for the game
+    private int handicappedScore; // Total score with handicaps
+    
+    private boolean isSeriesGame; // Indicates if the game is part of a series
+    private int seriesGameNumber; // The game number in the series
+    
+    // TODO Add labels
+    
+    public void addFrame(Frame frame) {
+        if (frames.size() < 10) {
+            frame.setFrameNumber(frames.size() + 1); // Set the frame number based on the current size
+            frames.add(frame);
+        } else {
+            throw new IllegalStateException("Cannot add more than 10 frames to a game.");
+        }
+    }
+    
+    public List<Frame> getFrames() {
+        return Collections.unmodifiableList(frames);
     }
 
     @Override
-    public void calculateStats(boolean forceRecalculate) {
-        // TODO Auto-generated method stub
+    public Iterator<Frame> iterator() {
+        return CollectionUtils.emptyIfNull(frames).iterator();
+    }
+    
+    public void calculateGameScoreAndLabels () {
         
+        // Setup the ball scores and labels for each frame
+        setupBallScoresAndLabels();
+        
+        int scoreAccumulator = 0;
+        for (int i = 0; i < frames.size(); i++) {
+            Frame frame = frames.get(i);
+            if (null != frame) {
+            
+                // Calculate the frame score including bonuses for strikes and spares
+                int frameScore = frame.getFramePinfall();
+                // TODO Add logic to calculate bonuses for strikes and spares based on subsequent frames
+                frame.setFrameScore(frameScore);
+                
+                scoreAccumulator += frame.getFrameScore();
+                frame.setCumulativeScore(scoreAccumulator);
+            }
+        }
+        
+        this.scratchScore = scoreAccumulator;
+        if (isHandicapped) {
+            this.handicappedScore = scratchScore + handicap;
+        }
+    }
+
+    private void setupBallScoresAndLabels() {
+        for (Frame frame : frames) {
+            int frameScoreAccumulator = 0;
+            for (int b = 0; b < frame.getBallRollCount(); b++) { // We assume frame validates the max ball rolls in the frame 
+                BallRoll ballRoll = frame.getBallRoll(b);
+                if (null != ballRoll.getPinsStanding()) {
+                    int pinsStanding = ballRoll.getPinsStanding().getNumberOfPinsStanding();
+                    ballRoll.setPinsKnockedDown(10 - pinsStanding - (frameScoreAccumulator % 10));
+                }
+                // TODO Set ball roll score labels (STRIKE, SPARE, etc.) based on the pins knocked down and the frame state
+                // TODO Conditional exit if the frame is a strike or a spare OR it is an open frame and the second ball roll is completed
+                frameScoreAccumulator += ballRoll.getPinsKnockedDown();
+            }
+            frame.setFramePinfall(frameScoreAccumulator);
+            // TODO Set frame score labels (STRIKE, SPARE, etc.) based on the frame score and the ball rolls
+        }
     }
 }

@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.core.model.score;
+package name.bindul.bls.dm.core.model.scoreorig;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -36,6 +38,29 @@ class ScoreLabelColl {
     private final ScoreComponent component;
     private Set<ScoreLabel> scoreLabels = null;
     
+    public void addComputedScoreLabelIfNotPresent(ScoreLabel label) {
+        Objects.requireNonNull(label);
+        if (!containsScoreLabel(label)) {
+            addComputedScoreLabel(label);
+        }
+    }
+    
+    public boolean addComputedScoreLabel(ScoreLabel label) {
+        Objects.requireNonNull(label);
+        ScoreLabel labelToAdd = label;
+        if (!labelToAdd.isComputed()) {
+            labelToAdd = labelToAdd.toBuilder().computed(true).build();
+        }
+        return addScoreLabel(labelToAdd);
+    }
+    
+    public void addScoreLabelIfNotPresent(ScoreLabel label) {
+        Objects.requireNonNull(label);
+        if (!containsScoreLabel(label)) {
+            addScoreLabel(label);
+        }
+    }
+    
     public boolean addScoreLabel(ScoreLabel label) {
         Objects.requireNonNull(label);
         if (component != label.getComponent()) {
@@ -45,6 +70,17 @@ class ScoreLabelColl {
             this.scoreLabels = new HashSet<>();
         }
         return this.scoreLabels.add(label);
+    }
+    
+    public boolean addAllScoreLabels(Collection<ScoreLabel> c) {
+        Objects.requireNonNull(c);
+        if (null == this.scoreLabels) {
+            this.scoreLabels = new HashSet<>();
+        }
+        if(!c.stream().allMatch(c1 -> component == c1.getComponent())) {
+            throw new IllegalArgumentException("Can only add labels for : " + component.name());
+        }
+        return this.scoreLabels.addAll(c);
     }
     
     public boolean containsScoreLabel(ScoreLabel label) {
@@ -69,5 +105,13 @@ class ScoreLabelColl {
     
     public Stream<ScoreLabel> streamScoreLabels() {
         return Streams.of(this.scoreLabels);
+    }
+    
+    public Set<ScoreLabel> getUnmodifiableScoreLabels() {
+        return (null == this.scoreLabels) ? Collections.emptySet() : Collections.unmodifiableSet(this.scoreLabels);
+    }
+    
+    public int getScoreLabelsCount() {
+        return (null == this.scoreLabels) ? 0 : this.scoreLabels.size();
     }
 }

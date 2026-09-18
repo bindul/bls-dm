@@ -16,68 +16,57 @@
 package name.bindul.bls.dm.core.model.score;
 
 import java.util.Iterator;
-import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Delegate;
-import name.bindul.bls.dm.core.model.BlsStatsHolder;
 
-/**
- * A single frame in a bowling game. A frame consists of one or two rolls, depending on whether the player rolls a 
- * strike or not. In the case of the 10th frame, there can be up to three rolls if the player rolls a strike or spare.
- */
 @Data
-public class Frame implements BlsStatsHolder, Iterable<BallRoll> {
+public class Frame implements Iterable<BallRoll> {
+    
+    private int frameNumber; // Frame number (1-10)
+    
+    @Setter(value = AccessLevel.PRIVATE)
+    private int ballRollCount; // Number of ball rolls in this frame
+    @Setter(value = AccessLevel.PRIVATE) @Getter(value = AccessLevel.PRIVATE)
+    private BallRoll[] ballRolls = new BallRoll[3]; // Array to hold the ball rolls for this frame
+    
+    private int framePinfall; // Pins dropped in this frame
+    private int frameScore; // Score for this frame (including bonuses)
+    private int cumulativeScore; // Cumulative score up to this frame
 
-	private int frameNumber; // 1 to 10
-	private List<BallRoll> rolls; // 1 or 2 rolls, or 3 in the case of the 10th frame
-	private int rawScore; // Score for the frame without bonuses from subsequent rolls
-	private int frameScore; // Total score for the frame, including bonuses from subsequent rolls
-	private int cumulativeScore; // Cumulative score up to this frame
-	@Delegate @Getter(value = AccessLevel.PRIVATE) @Setter(value = AccessLevel.PRIVATE)
-    private ScoreLabelColl scoreLabels = new ScoreLabelColl(ScoreComponent.FRAME);
-	
+    // TODO Add labels
+    
+    public void addBallRoll(BallRoll ballRoll) {
+        if ((frameNumber < 10 && ballRollCount < 2) || (frameNumber == 10 && ballRollCount < 3)) {
+            ballRolls[ballRollCount++] = ballRoll;
+        } else {
+            throw new IllegalStateException("Cannot add more than 3 ball rolls to a frame.");
+        }
+    }
+    
+    public BallRoll getBallRoll(int index) {
+        if (index < 0 || index >= ballRollCount) {
+            throw new IndexOutOfBoundsException("Invalid ball roll index: " + index);
+        }
+        return ballRolls[index];
+    }
+
     @Override
     public Iterator<BallRoll> iterator() {
-        // TODO Auto-generated method stub
-        return null;
+        return new Iterator<BallRoll>() {
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return index < ballRollCount;
+            }
+
+            @Override
+            public BallRoll next() {
+                return ballRolls[index++];
+            }
+        };
     }
-	
-	@Override
-	public void calculateStats(boolean forceRecalculate) {
-		
-		// TODO Implement
-		
-		// Right now we blind re-calculate everything!
-		if (rolls != null && !rolls.isEmpty()) {
-			
-			int frameScoreAccumulator = 0;
-			for (int i = 0; i < 3 && i < rolls.size(); i++) {
-				if (i > 1 && frameNumber < 10) {
-					break; // Only 2 rolls in frames 1-9
-				}
-				
-				BallRoll roll = rolls.get(i);
-				if (roll.getRollNumber() == 0) {
-					roll.setRollNumber(i + 1); // Set roll number if not already set
-				}
-				
-//				if (roll.getPinsKnockedDown() == 0 && roll.getPinsStanding() != null) {
-//					// Calculate pins knocked down based on pins standing
-//					int pinsKnockedDown = 10 - roll.getPinsStanding().countStandingPins(); // Need to account for stuff like splits, fouls, etc. in a real implementation
-//					roll.setPinsKnockedDown(pinsKnockedDown);
-//				}
-//				framesco
-				
-				// Compute labels
-			}
-			
-			rawScore = rolls.stream().mapToInt(BallRoll::getPinsKnockedDown).sum();
-		} else {
-			rawScore = 0;
-		}
-	}
 }

@@ -35,6 +35,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import name.bindul.bls.dm.core.model.scoreorig.Game;
+
 /**
  * Unit tests for the Game class, focusing on score calculations, attributes, and labels.
  * 

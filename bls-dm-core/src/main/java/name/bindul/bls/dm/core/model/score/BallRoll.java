@@ -15,28 +15,14 @@
  */
 package name.bindul.bls.dm.core.model.score;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Delegate;
 
-/**
- * A single roll of a bowling ball in a game. It records the number of pins knocked down in that roll.
- */
 @Data
 public class BallRoll {
 
-	private int rollNumber; // 1 or 2, or 3 in the case of the 10th frame
-	
-	private int pinsKnockedDown; // 0 to 10
-
-	/**
-	 * Represents the pins that are still standing after the roll. Each bit corresponds to a pin, with 1 
-	 * indicating the pin is standing and 0 indicating it has been knocked down.
-	 */
-	private PinsStanding pinsStanding;
-	
-	@Delegate @Getter(value = AccessLevel.PRIVATE) @Setter(value = AccessLevel.PRIVATE)
-	private ScoreLabelColl scoreLabels = new ScoreLabelColl(ScoreComponent.BALL_ROLL);
+    private int rollNumber; // Roll number within the frame (1, 2, or 3 for the 10th frame)
+    private int pinsKnockedDown; // Number of pins knocked down in this roll (0-10)
+    private PinsStanding pinsStanding; // Represents the pins that are still standing after the roll
+    
+    // TODO Score labels for this roll, such as STRIKE, SPARE, etc. This is used for scoring and display purposes.
 }
