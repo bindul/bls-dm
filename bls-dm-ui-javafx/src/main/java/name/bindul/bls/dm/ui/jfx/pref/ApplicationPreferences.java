@@ -20,13 +20,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.prefs.Preferences;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
 import name.bindul.bls.dm.ui.jfx.BlsDmApp;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 @Log4j2
 @UtilityClass
@@ -49,7 +48,7 @@ public class ApplicationPreferences {
 		if (null != serRecentRepos) {
 			try {
 				return Optional.of(new ObjectMapper().readValue(serRecentRepos, new TypeReference<List<RecentRepository>>(){}));
-			} catch (JsonProcessingException e) {
+			} catch (JacksonException e) {
 				log.warn("Error deserializing recent repositories [{}] : {}", serRecentRepos, e.getMessage(), e);
 			}
 		}
@@ -79,7 +78,7 @@ public class ApplicationPreferences {
 		if (hasChanges) {
 			try {
 				prefs.put(RECENT_REPOSITORIES_KEY, new ObjectMapper().writeValueAsString(repoList));
-			} catch (JsonProcessingException e) {
+			} catch (JacksonException e) {
 				log.warn("Error serializing recent repositories [{}] : {}", repoList, e.getMessage(), e);
 			}
 		}

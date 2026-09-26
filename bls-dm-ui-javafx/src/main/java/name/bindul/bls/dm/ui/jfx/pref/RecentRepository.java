@@ -15,7 +15,7 @@
  */
 package name.bindul.bls.dm.ui.jfx.pref;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 @JsonSerialize
 public record RecentRepository(String repositoryLocationTypeCode, String location) {}

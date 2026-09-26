@@ -35,6 +35,7 @@ bls-dm (parent)
 ├── bls-dm-ui-javafx    - Primary UI client (JavaFX)
 ├── bls-dm-ui-swt       - Alternative UI client (SWT)
 └── bls-dm-app          - Application packaging & distribution
+└── bls-dm-import-ls    - Parse League Secretary generated PDFs
 ```
 
 ### Architectural Layers

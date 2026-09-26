@@ -40,7 +40,7 @@
                 <configuration>
                     <sourceDirectory>${basedir}/src/main/resources/json-schema</sourceDirectory>
                     <targetPackage>name.bindul.bls.dm.export.site.model</targetPackage>
-                    <annotationStyle>jackson2</annotationStyle>
+                    <annotationStyle>jackson3</annotationStyle>
                 </configuration>
                 <executions>
                     <execution>
@@ -69,7 +69,7 @@
             <scope>provided</scope>
         </dependency>
   		<dependency>
-           <groupId>com.fasterxml.jackson.core</groupId>
+           <groupId>tools.jackson.core</groupId>
            <artifactId>jackson-databind</artifactId>
         </dependency>
   	</dependencies>

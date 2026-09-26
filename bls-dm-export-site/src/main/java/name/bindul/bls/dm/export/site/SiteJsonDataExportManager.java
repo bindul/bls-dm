@@ -29,7 +29,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auto.service.AutoService;
 
 import lombok.extern.log4j.Log4j2;
@@ -46,6 +45,8 @@ import name.bindul.bls.dm.export.site.model.LeaguesIndexSchema;
 import name.bindul.bls.dm.export.site.model.Location;
 import name.bindul.bls.dm.export.site.model.Season;
 import name.bindul.bls.dm.export.site.model.Team;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @Log4j2
 @AutoService(DataExportManager.class)
@@ -125,7 +126,7 @@ public class SiteJsonDataExportManager implements DataExportManager {
 		final ObjectMapper om = new ObjectMapper();
 		try {
 			om.writer().writeValue(destinFile, leagueSchema);
-		} catch (IOException e) {
+		} catch (JacksonException e) {
 			throw new DataExportException("Error writing destination file: " + e.getMessage(), e);
 		}
 	}
