@@ -1,0 +1,27 @@
+                                                                Season    High  Scores
+    Team  Division #1 - Division A!
+          Team Handicap Series                Team Handicap Game                   Team Scratch Series                  Team Scratch Game
+       2845  Team A1                        990  Team A2                         2276  Team A3                         825  Team A4
+       2735  Team A5                        967  Team A6                         2128  Team A7                         757  Team A8
+       2623  Team A9                        934  Team A10                        2116  Team A11                        749  Team A12
+    Team  Division #2 - Division B!
+          Team Handicap Series                Team Handicap Game                   Team Scratch Series                  Team Scratch Game
+       2676  Team B1                        933  Team B2                         2241  Team B3                         737  Team B4
+       2600  Team B5                        921  Team B6                         2139  Team B7                         722  Team B8
+       2571  Team B9                        909  Team B10                        1846  Team B11                        722  Team B12
+    Division A!
+                    Handicap Series                   Handicap Game                     Scratch Series                    Scratch Game
+    Men           869  Player A01                    305 Player A02                    692  Player A03                    277  Player A04
+                  807  Player A05                    304 Player A06                    678  Player A07                    257  Player A08
+                  772  Player A09                    287 Player A10                    675  Player A11                    254  Player A12
+    Women         710  Player A13                    257 Player A14                    559  Player A15                    203  Player A16
+                  649  Player A17                    232 Player A18                    490  Player A19                    167  Player A20
+                  607  Player A21                    232 Player A22                    319  Player A23
+    Division B!
+                    Handicap Series                   Handicap Game                     Scratch Series                    Scratch Game
+    Men           845  Player B01                    305 Player B02                    645  Player B03                    256  Player B04
+                  778  Player B05                    292 Player B06                    628  Player B07                    236  Player B08
+                  735  Player B09                    272 Player B10                    628  Player B11                    234  Player B12
+    Women         679  Player B13                    259 Player B14                    518  Player B15                    173  Player B16
+                  665  Player B17                    230 Player B18                    467  Player B19                    151  Player B20
+                  623  Player B21                    230 Player B22                    378  Player B23                    148  Player B24

@@ -19,7 +19,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data @RequiredArgsConstructor
-public class PlayerInfo {
+public class PlayerInfo implements EntityInfo {
 
     private final String name;
+    private TeamInfo team;
 }

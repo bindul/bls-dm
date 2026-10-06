@@ -18,6 +18,7 @@ package name.bindul.bls.dm.imports.ls.model.standings;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.apache.commons.text.similarity.JaroWinklerSimilarity;
 
@@ -28,6 +29,7 @@ public class LeagueStandings {
 
     private LocalDate date;
     private int weekNumber;
+    private int totalWeeks;
     private String leagueName;
     private String dayOfWeek;
     private LocalTime startTime;
@@ -41,12 +43,22 @@ public class LeagueStandings {
 
     private List<Matchup> lastWeekMatchups;
 
-    private List<AccoladeGroup> individualHighAverages;
-    private List<AccoladeGroup> seasonHighScores;
-    private List<AccoladeGroup> lastWeekHighScores;
+    private List<AccoladeGroup<PlayerInfo>> individualHighAverages;
+    private List<AccoladeGroup<TeamInfo>> seasonTeamHighScores;
+    private List<AccoladeGroup<PlayerInfo>> seasonIndividualHighScores;
+    private List<AccoladeGroup<TeamInfo>> lastWeekTeamHighScores;
+    private List<AccoladeGroup<PlayerInfo>> lastWeekIndividualHighScores;
 
     private List<TeamPlayers> players;
     private List<Player> substitutes;
+
+    public DivisionInfo getDivisionByName(String divisionName) {
+        return divisions.stream()
+                .filter(division -> division.getDivisionInfo().getName().equalsIgnoreCase(divisionName))
+                .findFirst()
+                .map(Division::getDivisionInfo)
+                .orElse(null);
+    }
 
     public TeamInfo getTeamByNumber(int teamNumber) {
         for (Division division : divisions) {
@@ -91,4 +103,27 @@ public class LeagueStandings {
         // Return the best match if the similarity is above a certain threshold (e.g., 0.8)
         return (highestSimilarity >= 0.8) ? bestMatch : null;
     }
+
+    public PlayerInfo searchPlayerByName(String playerName) {
+        // TODO See if we we can cache this later?
+        Stream<Player> divisionPlayers = players.stream().flatMap(teamPlayers -> teamPlayers.getPlayers().stream());
+        List<PlayerInfo> allPlayers = Stream.concat(divisionPlayers, substitutes.stream())
+                .map(Player::getPlayerInfo)
+                .toList();
+
+        final JaroWinklerSimilarity jaroWinkler = new JaroWinklerSimilarity();
+        PlayerInfo bestMatch = null;
+        double highestSimilarity = -1.0;
+
+        for (PlayerInfo playerInfo : allPlayers) {
+            double similarity = jaroWinkler.apply(playerName, playerInfo.getName());
+            if (similarity > highestSimilarity) {
+                highestSimilarity = similarity;
+                bestMatch = playerInfo;
+            }
+        }
+
+        // Return the best match if the similarity is above a certain threshold (e.g., 0.8)
+        return (highestSimilarity >= 0.8) ? bestMatch : null;
+    }   
 }

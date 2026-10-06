@@ -18,11 +18,11 @@ package name.bindul.bls.dm.imports.ls.model.standings;
 import java.util.List;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@Data
+@Data @RequiredArgsConstructor
 public class Division {
 
-    private int number;
-    private String name;
+    private final DivisionInfo divisionInfo;
     private List<TeamInfo> teams;
 }

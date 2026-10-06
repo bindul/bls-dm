@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.imports.ls.parsers;
+package name.bindul.bls.dm.imports.ls.parsers.shared;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import lombok.experimental.UtilityClass;
 
@@ -29,6 +30,7 @@ public class ParserUtils {
 
     private static final Pattern INTEGER_TOKEN_PATTERN = Pattern.compile("^\\d+$");
     private static final Pattern FRACTION_TOKEN_PATTERN = Pattern.compile("^(\\d+)\\s?([\\u00BC-\\u00BE\\u2150-\\u215E]?)$");
+    private static final Pattern NUMBER_TOKEN_PATTER = Pattern.compile("^\\d+(?:\\.\\d{0,2})?$");
     private static final Map<Character, Float> FRACTION_UNICODE_MAP = Map.ofEntries(
             Map.entry('\u00BC', 0.25f), // ¼
             Map.entry('\u00BD', 0.5f),  // ½
@@ -50,8 +52,8 @@ public class ParserUtils {
             Map.entry('\u215E', 7f / 8f)   // ⅞
     );
 
-    public static String normalize(String line) {
-        return line == null ? "" : line.trim().replace('\u00A0', ' ');
+    public static String removeExtraWhitespaces (String line) {
+        return line == null ? "" : line.replaceAll("\\s{2,}", " ").replace('\u00A0', ' ').trim();
     }
 
     public static String joinTokens(String[] tokens, int startInclusive, int endExclusive) {
@@ -92,61 +94,15 @@ public class ParserUtils {
         return 0.0f;
     }
 
-    public static List<String> normalizeLines(String text) {
+    public static List<String> normalizeLines(String text, boolean removeWhitespaces) {
         List<String> lines = new ArrayList<>();
         for (String rawLine : text.split("\\R")) {
-            String line = normalize(rawLine);
-            if (!line.isBlank()) {
+            String line = removeWhitespaces ? removeExtraWhitespaces(rawLine) : rawLine.replace('\u00A0', ' ');
+            if (!line.trim().isBlank()) {
                 lines.add(line);
             }
         }
         return lines;
-    }
-
-    public static int findLineIndex(List<String> lines, String marker) {
-        for (int i = 0; i < lines.size(); i++) {
-            if (lines.get(i).equalsIgnoreCase(marker)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public static boolean isHeaderLine(String line, String[] headerPrefixes) {
-        final String normalized = normalize(line).toLowerCase(Locale.ROOT);
-        if (normalized.isBlank()) {
-            return false;
-        }
-        for (String prefix : headerPrefixes) {
-            if (hasPrefixWithBoundary(normalized, prefix)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean hasPrefixWithBoundary(String line, String prefix) {
-        if (!line.startsWith(prefix)) {
-            return false;
-        }
-        final int prefixLength = prefix.length();
-        if (prefixLength == 0 || line.length() == prefixLength) {
-            return true;
-        }
-
-        final char lastPrefixChar = prefix.charAt(prefixLength - 1);
-        if (!isWordChar(lastPrefixChar)) {
-            return true;
-        }
-        return !isWordChar(line.charAt(prefixLength));
-    }
-
-    private static boolean isWordChar(char value) {
-        return Character.isLetterOrDigit(value) || value == '_';
-    }
-
-    public static boolean isIntegerToken(String token) {
-        return INTEGER_TOKEN_PATTERN.matcher(token).matches();
     }
 
     public static boolean matchesHeaderTokens (String[] tokens, String[][] headers) {
@@ -167,12 +123,81 @@ public class ParserUtils {
         return false;
     }
 
+    public static boolean isIntegerToken(String token) {
+        return INTEGER_TOKEN_PATTERN.matcher(token).matches();
+    }
+
     public static boolean areIntegerTokens(String[] tokens, int startInclusive, int endExclusive) {
+        Matcher matcher = INTEGER_TOKEN_PATTERN.matcher("");
         for (int i = startInclusive; i < endExclusive; i++) {
-            if (!isIntegerToken(tokens[i])) {
+            if (!matcher.reset(tokens[i]).matches()) {
                 return false;
             }
         }
         return true;
+    }
+
+    public static int findFirstIntegerTokenIndex(String[] tokens) {
+        Matcher matcher = INTEGER_TOKEN_PATTERN.matcher("");
+        for (int i = 0; i < tokens.length; i++) {
+            if (matcher.reset(tokens[i]).matches()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean isNumberToken(String token) {
+        return NUMBER_TOKEN_PATTER.matcher(token).matches();
+    }
+
+    public static int findNextNumberTokenIndex(String[] tokens, int startIndex) {
+        Matcher matcher = NUMBER_TOKEN_PATTER.matcher("");
+        for (int i = startIndex; i < tokens.length; i++) {
+            if (matcher.reset(tokens[i]).matches()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static Pair<Integer, Integer> findSectionBoundaries(List<String> lines, Pattern sectionMarker, Pattern nextSectionMarker) {
+        int start = findLinePatternIndex(lines, sectionMarker);
+        if (start < 0) {
+            return null;
+        }
+
+        int end = lines.size(); // Substitutes section is usually at the end of the document
+        if (null != nextSectionMarker) {
+            end = findLinePatternIndex(lines, nextSectionMarker);
+            if (end < 0) {
+                end = lines.size();
+            }
+        }
+
+        return Pair.of(start, end);
+    }
+
+    public static int findLinePatternIndex(List<String> lines, Pattern marker) {
+        final Matcher matcher = marker.matcher("");
+        for (int i = 0; i < lines.size(); i++) {
+            final String line = lines.get(i);
+            if (null != line && matcher.reset(line.strip()).matches()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static String extractColumnValue(String line, ColumnDescriptor column) {
+        return extractColumnValue(line, column, false);
+    }
+
+    public static String extractColumnValue(String line, ColumnDescriptor column, boolean trim) {
+        if (line != null && line.length() >= (column.start() + column.length())) {
+            String value = line.substring(column.start(), column.start() + column.length());
+            return trim ? value.trim() : value;
+        }
+        return null;
     }
 }

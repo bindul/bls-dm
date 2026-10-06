@@ -20,7 +20,7 @@ import lombok.Data;
 @Data
 public class Matchup {
 
-    private int[] lanes;
+    private LanePair lanes;
     private TeamInfo team1;
     private MatchupScores team1Scores;
     private float team1PointsWon;

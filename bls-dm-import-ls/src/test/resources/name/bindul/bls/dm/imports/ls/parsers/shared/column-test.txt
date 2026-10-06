@@ -1,0 +1,22 @@
+## Test 1 (lines 1-5) Simple test with 4 columns all left aligned and no headers
+Name        Age    City         Country
+Alice       30     New York     USA
+Bob         25     Los Angeles  USA
+Charlie     35     Chicago      USA
+
+## Test 2 (lines 7-10) Test with 3 columns, mixed alignment, and headers
+Name        Average     TeamAlice           250     Team A
+Bob              98     Team B
+Charlie        1075     Team C
+
+## Test 3 (lines 13-16) Test with 4 columns, consecutive left aligned columns, and headers
+Name           Avg      Score     Lanes
+Alice           250      250.00   17-18
+Bob              98       98.12   15-16
+Charlie        1075     1528.22   13-14
+
+## Test 4 (lines 19-22) Test with 3 columns, first left aligned column with space before, and headers
+  Average       Score   Lanes
+      250      250.00   17-18
+       98       98.12   15-16
+     1075     1528.22   13-14

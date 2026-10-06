@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package name.bindul.bls.dm.imports.ls.parsers.pdf;
+package name.bindul.bls.dm.imports.ls.parsers.shared;
 
-public record PdfSection(String title, String content) {
-	public PdfSection {
-		title = title == null ? "" : title.trim();
-		content = content == null ? "" : content.trim();
-	}
+import java.util.List;
+
+import lombok.Data;
+
+@Data
+public class ColumnGroup {
+
+    private List<ColumnDescriptor> columns;
+
+    private List<Integer> lines; // Line numbers where this column group is found
 }

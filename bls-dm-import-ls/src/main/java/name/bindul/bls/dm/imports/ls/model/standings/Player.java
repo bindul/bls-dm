@@ -30,9 +30,12 @@ public class Player {
     private int highScratchSeries;
     private int avgHdcpGame;
     private int avgHdcpSeries;
-    private int lastWeekGame1;
-    private int lastWeekGame2;
-    private int lastWeekGame3;
+    private Integer lastWeekGame1;
+    private Character lastWeekGame1Label;
+    private Integer lastWeekGame2;
+    private Character lastWeekGame2Label;
+    private Integer lastWeekGame3;
+    private Character lastWeekGame3Label;
     private int lastWeekScratchTotal;
     private int lastWeekHdcpTotal;
 

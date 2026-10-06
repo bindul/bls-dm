@@ -22,15 +22,15 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class StandingsPdfConstants {
 
-    static final String TEAM_STANDINGS_MARKER = "Team Standings In Each Division";
-    static final String REVIEW_LAST_WEEKS_BOWLING_MARKER = "Review of Last Week's Bowling.....";
-    static final String INDIVIDUAL_HIGH_AVERAGES_MARKER = "Individual High Averages";
-    static final String SEASON_HIGH_SCORES_MARKER = "Season High Scores";
-    static final String LAST_WEEK_TOP_SCORES_MARKER = "Last Week's Top Scores";
-    static final String TEAM_ROSTERS_MARKER = "Team Rosters";
-    static final String TEMP_SUBSTITUTES_MARKER = "Temporary Substitutes";
-    static final Pattern PAGE_HEADER_LINE_PATTERN = Pattern.compile("^(\\d{1,2}/\\d{1,2}/\\d{4})\\s+Week\\s+(\\d+)(?:\\s+of\\s+(\\d+))?");
-    static final Pattern PAGE_FOOTER_LINE_PATTERN = Pattern.compile("^(\\d{1,2}/\\d{1,2}/\\d{4})\\s+(\\d{1,2}:\\d{2}\\s+(?:am|pm))\\s+Page\\s+(\\d+)\\s+of\\s+(\\d+)?");
+    static final Pattern TEAM_STANDINGS_MARKER = Pattern.compile("Team\\s+Standings\\s+In\\s+Each\\s+Division");
+    static final Pattern REVIEW_LAST_WEEKS_BOWLING_MARKER = Pattern.compile("Review\\s+of\\s+Last\\s+Week's\\s+Bowling.....");
+    static final Pattern INDIVIDUAL_HIGH_AVERAGES_MARKER = Pattern.compile("Individual\\s+High\\s+Averages");
+    static final Pattern SEASON_HIGH_SCORES_MARKER = Pattern.compile("Season\\s+High\\s+Scores");
+    static final Pattern LAST_WEEK_TOP_SCORES_MARKER = Pattern.compile("Last\\s+Week's\\s+Top\\s+Scores");
+    static final Pattern TEAM_ROSTERS_MARKER = Pattern.compile("Team\\s+Rosters");
+    static final Pattern TEMP_SUBSTITUTES_MARKER = Pattern.compile("Temporary\\s+Substitutes");
+    static final Pattern PAGE_HEADER_LINE_PATTERN = Pattern.compile("^\\s*(\\d{1,2}/\\d{1,2}/\\d{4})\\s+Week\\s*(\\d+)\\s*of\\s*(\\d+)"); // Don't take it to the end of the line, other parsers depend on the index of the end of this match
+    static final Pattern PAGE_FOOTER_LINE_PATTERN = Pattern.compile("^\\s*(\\d{1,2}/\\d{1,2}/\\d{4})\\s+(\\d{1,2}:\\d{2}\\s+(?:am|pm))\\s+Page\\s+(\\d+)\\s+of\\s+(\\d+)?");
     static final String[] HEADER_PREFIXES = {
         "bls-",
         "page",

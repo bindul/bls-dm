@@ -19,7 +19,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data @RequiredArgsConstructor
-public class TeamInfo {
+public class TeamInfo implements EntityInfo {
 
     private final int number;
     private final int divisionNumber;

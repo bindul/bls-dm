@@ -21,13 +21,16 @@ import static name.bindul.bls.dm.imports.ls.parsers.standings.StandingsPdfConsta
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
 import name.bindul.bls.dm.imports.ls.model.standings.Division;
+import name.bindul.bls.dm.imports.ls.model.standings.DivisionInfo;
 import name.bindul.bls.dm.imports.ls.model.standings.LeagueStandings;
 import name.bindul.bls.dm.imports.ls.model.standings.TeamInfo;
 import name.bindul.bls.dm.imports.ls.model.standings.TeamStats;
-import name.bindul.bls.dm.imports.ls.parsers.ParserUtils;
+import name.bindul.bls.dm.imports.ls.parsers.shared.ParserUtils;
 
 @UtilityClass
 @Log4j2
@@ -39,30 +42,25 @@ public class TeamStandingsParser {
     };
 
     static void parseDivisionAndTeams(List<String> lines, LeagueStandings standings) {
-        int start = ParserUtils.findLineIndex(lines, TEAM_STANDINGS_MARKER);
-        if (start < 0) {
+        Pair<Integer, Integer> sectionBoundary = ParserUtils.findSectionBoundaries(lines, TEAM_STANDINGS_MARKER, REVIEW_LAST_WEEKS_BOWLING_MARKER);
+        if (sectionBoundary == null) {
             return;
-        }
-
-        int end = ParserUtils.findLineIndex(lines, REVIEW_LAST_WEEKS_BOWLING_MARKER);
-        if (end < 0) {
-            end = lines.size();
         }
 
         List<Division> divisions = new ArrayList<>();
         List<TeamStats> allTeams = new ArrayList<>();
         Division currentDivision = null;
 
-        for (int i = start + 1; i < end; i++) {
+        for (int i = sectionBoundary.getLeft() + 1; i < sectionBoundary.getRight(); i++) {
             final String line = lines.get(i).trim();
             String[] tokens = line.split("\\s+");
 
             // Check if the line is a division header
             if (!isTeamLine(tokens) && !isTeamStandingsHeaderToken(tokens)) {
                 // This line is likely a division header
-                currentDivision = new Division();
-                currentDivision.setNumber(divisions.size() + 1);
-                currentDivision.setName(line);
+                DivisionInfo divisionInfo = new DivisionInfo(divisions.size() + 1);
+                divisionInfo.setName(line);
+                currentDivision = new Division(divisionInfo);
                 currentDivision.setTeams(new ArrayList<>());
                 divisions.add(currentDivision);
             }
@@ -76,6 +74,7 @@ public class TeamStandingsParser {
             }
         }
 
+        divisions.forEach(division -> division.getTeams().sort((t1, t2) -> Integer.compare(t1.getNumber(), t2.getNumber())));
         standings.setDivisions(divisions);
         standings.setTeamStandings(allTeams);
     }
@@ -90,7 +89,7 @@ public class TeamStandingsParser {
 
             // This is the first time we see a team, so we assume we create the team here
             final int teamNumber = ParserUtils.parseInt(tokens[1]);
-            final TeamInfo teamInfo = new TeamInfo(teamNumber, division.getNumber());
+            final TeamInfo teamInfo = new TeamInfo(teamNumber, division.getDivisionInfo().getNumber());
             teamInfo.setName(ParserUtils.joinTokens(tokens, 2, statsStart));
 
             final TeamStats teamStats = new TeamStats(teamInfo);

@@ -21,13 +21,16 @@ import static name.bindul.bls.dm.imports.ls.parsers.standings.StandingsPdfConsta
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
+import name.bindul.bls.dm.imports.ls.model.standings.LanePair;
 import name.bindul.bls.dm.imports.ls.model.standings.LeagueStandings;
 import name.bindul.bls.dm.imports.ls.model.standings.Matchup;
 import name.bindul.bls.dm.imports.ls.model.standings.MatchupScores;
 import name.bindul.bls.dm.imports.ls.model.standings.TeamInfo;
-import name.bindul.bls.dm.imports.ls.parsers.ParserUtils;
+import name.bindul.bls.dm.imports.ls.parsers.shared.ParserUtils;
 
 @UtilityClass
 @Log4j2
@@ -46,19 +49,14 @@ Lanes Team Name -1- -2- -3- Total WON Team Name -1- -2- -3- Total WON
      */
 
     static void parseMatchups(List<String> lines, LeagueStandings standings) {
-        int start = ParserUtils.findLineIndex(lines, REVIEW_LAST_WEEKS_BOWLING_MARKER);
-        if (start < 0) {
+        Pair<Integer, Integer> sectionBoundary = ParserUtils.findSectionBoundaries(lines, REVIEW_LAST_WEEKS_BOWLING_MARKER, INDIVIDUAL_HIGH_AVERAGES_MARKER);
+        if (sectionBoundary == null) {
             return;
-        }
-
-        int end = ParserUtils.findLineIndex(lines, INDIVIDUAL_HIGH_AVERAGES_MARKER);
-        if (end < 0) {
-            end = lines.size();
         }
 
         final List<Matchup> matchups = new ArrayList<>();
 
-        for (int i = start + 1; i < end; i++) {
+        for (int i = sectionBoundary.getLeft() + 1; i < sectionBoundary.getRight(); i++) {
             final String line = lines.get(i).trim();
             String[] tokens = line.split("\\s+");
 
@@ -83,7 +81,7 @@ Lanes Team Name -1- -2- -3- Total WON Team Name -1- -2- -3- Total WON
                 return null;
             }
 
-            final int[] lanes = parseLanes(tokens[0]);
+            final LanePair lanes = parseLanes(tokens[0]);
             if (lanes == null) {
                 return null;
             }
@@ -138,12 +136,12 @@ Lanes Team Name -1- -2- -3- Total WON Team Name -1- -2- -3- Total WON
         return -1;
     }
 
-    private static int[] parseLanes(String laneToken) {
+    private static LanePair parseLanes(String laneToken) {
         String[] parts = laneToken.split("-");
         if (parts.length != 2 || !ParserUtils.isIntegerToken(parts[0]) || !ParserUtils.isIntegerToken(parts[1])) {
-            return new int[0];
+            return null;
         }
-        return new int[] {ParserUtils.parseInt(parts[0]), ParserUtils.parseInt(parts[1])};
+        return new LanePair (ParserUtils.parseInt(parts[0]), ParserUtils.parseInt(parts[1]));
     }
 
     private static MatchupScores buildScores(String[] tokens, int scoreStart) {

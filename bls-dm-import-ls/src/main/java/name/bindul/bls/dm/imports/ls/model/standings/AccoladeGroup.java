@@ -20,11 +20,15 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class AccoladeGroup {
+public class AccoladeGroup <T extends EntityInfo> {
 
-    private String accoladeHolderType;
-    private String division;
+    public enum AccoladeHolderType {
+        PLAYER, TEAM
+    }
+
+    private DivisionInfo division;
+    private AccoladeHolderType accoladeHolderType;
     private String accoladeType;
     private String gender;
-    private List<Accolade> accolades;
+    private List<Accolade<T>> accolades;
 }

@@ -18,9 +18,9 @@ package name.bindul.bls.dm.imports.ls.model.standings;
 import lombok.Data;
 
 @Data
-public class Accolade {
-    
+public class Accolade<T extends EntityInfo> {
+
     private int position;
-    private String holderName;
+    private T holder;
     private String value;
 }

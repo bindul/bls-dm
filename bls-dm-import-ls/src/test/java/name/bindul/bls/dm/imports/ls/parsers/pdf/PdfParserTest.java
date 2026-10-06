@@ -20,12 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
-
-import name.bindul.bls.dm.imports.ls.parsers.pdf.PdfParser;
-import name.bindul.bls.dm.imports.ls.parsers.pdf.PdfSection;
 
 class PdfParserTest {
 
@@ -40,16 +36,5 @@ class PdfParserTest {
         assertNotNull(text);
         assertFalse(text.isBlank());
         assertTrue(text.contains("James Bayarsaikhan"));
-    }
-
-    @Test
-    void extractSections_shouldReturnAtLeastOneSection() throws Exception {
-        PdfParser parser = new PdfParser();
-
-        List<PdfSection> sections = parser.extractSections(SAMPLE_PDF);
-
-        assertNotNull(sections);
-        assertFalse(sections.isEmpty());
-        assertFalse(sections.get(0).content().isBlank());
     }
 }

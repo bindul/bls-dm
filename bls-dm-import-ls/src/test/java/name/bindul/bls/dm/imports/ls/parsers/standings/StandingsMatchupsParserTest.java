@@ -15,7 +15,6 @@
  */
 package name.bindul.bls.dm.imports.ls.parsers.standings;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -23,6 +22,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import name.bindul.bls.dm.imports.ls.model.standings.LanePair;
 import name.bindul.bls.dm.imports.ls.model.standings.LeagueStandings;
 import name.bindul.bls.dm.imports.ls.model.standings.Matchup;
 
@@ -46,7 +46,7 @@ class StandingsMatchupsParserTest {
         assertEquals(2, matchups.size());
 
         Matchup first = matchups.get(0);
-        assertArrayEquals(new int[] {1, 2}, first.getLanes());
+        assertEquals(new LanePair (1, 2), first.getLanes());
         assertEquals("Hookers & Bowl", first.getTeam1().getName());
         assertEquals(752, first.getTeam1Scores().getGame1Score());
         assertEquals(811, first.getTeam1Scores().getGame2Score());
