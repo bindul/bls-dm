@@ -30,16 +30,19 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class MultiColumnTableParser2 {
 
-    private static final int DEFAULT_MIN_SPACE_BETWEEN_COLUMNS = 3; // Minimum space between columns to consider them separate
+    public static final int DEFAULT_MIN_SPACE_BETWEEN_COLUMNS = 3; // Minimum space between columns to consider them separate
+    public static final int DEFAULT_MAX_COL_COUNT_DIFF_TO_MERGE = 0; // Maximum difference in column count to consider merging groups
 
     private final int minSpaceBetweenColumns;// Minimum space between columns to consider them separate
+    private final int maxColCountDiffToMerge; // Maximum difference in column count to consider merging groups
 
     public MultiColumnTableParser2() {
-        this(DEFAULT_MIN_SPACE_BETWEEN_COLUMNS);
+        this(DEFAULT_MIN_SPACE_BETWEEN_COLUMNS, DEFAULT_MAX_COL_COUNT_DIFF_TO_MERGE);
     }
 
-    public MultiColumnTableParser2(int minSpaceBetweenColumns) {
+    public MultiColumnTableParser2(int minSpaceBetweenColumns, int maxColCountDiffToMerge) {
         this.minSpaceBetweenColumns = minSpaceBetweenColumns;
+        this.maxColCountDiffToMerge = maxColCountDiffToMerge;
     }
 
     public List<ColumnGroup> identifyColumns(List<String> lines, Pair<Integer, Integer> of) {
@@ -49,16 +52,20 @@ public class MultiColumnTableParser2 {
             String line = lines.get(i);
             // Identify potential column start positions based on spaces
             LineColumns lineColumns = identifyPotentialColumns(line, i);
-            log.debug("Line {}: Potential columns identified: {}", line, lineColumns);
+            log.debug("Line {} {}: Potential columns identified: {}", i, line, lineColumns);
             if (null != lineColumns) {
                 addColumnsToGroup(similarLinesGroup, lineColumns);
             }
-            // Further logic to determine actual columns based on potential columns
         }
+
         // Handle right aligned columns by moving the start position left to merge lines in the same table
         similarLinesGroup = mergeGroupsWithPotentialRightAlignedColumns(similarLinesGroup);
+
+        // Handle empty columns that may skew the column detection and need to be forced to add columns based on 
+        // aligning other rows in the table
+        similarLinesGroup = mergeGroupsWithPotentialEmptyColumns(similarLinesGroup);
         // TODO Working here
-        // Handle empty columns that may skew the column detection and need to be forced to add columns based on aligning other rows in the table
+
         // Detect column headers - usually the first column (optionally turn them off)
         // Handle multi-line headings that may span multiple lines and need to be merged into a single column heading
         // Handle random heading lines that may not be part of the table but are in between the table rows
@@ -70,6 +77,11 @@ public class MultiColumnTableParser2 {
                 .sorted((cg1, cg2) -> Integer.compare(cg1.getLines().get(0), cg2.getLines().get(0)))
                 .toList();
         return cgs;
+    }
+
+    private List<SimilarLinesGroup> mergeGroupsWithPotentialEmptyColumns(List<SimilarLinesGroup> similarLinesGroup) {
+        // TODO Auto-generated method stub
+        return similarLinesGroup;
     }
 
     private List<SimilarLinesGroup> mergeGroupsWithPotentialRightAlignedColumns(List<SimilarLinesGroup> similarLinesGroup) {
@@ -209,22 +221,28 @@ public class MultiColumnTableParser2 {
     private LineColumns identifyPotentialColumns(String line, int lineNumber) {
 
         List<Column> columns = new ArrayList<>();
-        int spacesBefore = 0;
+        int spaceCounter = 0;
         Column currentColumn = null;
         for (int i = 0; i < line.length(); i++) {
             if (Character.isWhitespace(line.charAt(i))) {
-                spacesBefore++;
+                spaceCounter++;
+                if (currentColumn != null && spaceCounter >= minSpaceBetweenColumns) {
+                    // We are in the middle of a column, decision here to end the column if we have enough spaces
+                    currentColumn.setLength(i - currentColumn.getStart() - spaceCounter + 1);
+                    currentColumn = null;
+                }
             } else {
-                if (columns.isEmpty() || spacesBefore >= minSpaceBetweenColumns) {
+                if (currentColumn == null && (columns.isEmpty() || spaceCounter >= minSpaceBetweenColumns)) {
                     currentColumn = new Column();
                     currentColumn.setStart(i);
-                    currentColumn.setSpacesBefore(spacesBefore);
+                    currentColumn.setSpacesBefore(spaceCounter);
                     columns.add(currentColumn);
-                } else if (currentColumn != null) {
-                    currentColumn.setLength(i - currentColumn.getStart() + 1);
                 }
-                spacesBefore = 0;
+                spaceCounter = 0;
             }
+        }
+        if (currentColumn != null) {
+            currentColumn.setLength(line.length() - currentColumn.getStart());
         }
         if (!columns.isEmpty() && columns.size() > 1) {
             return LineColumns.builder().line(lineNumber).columns(columns).build();
@@ -237,6 +255,12 @@ public class MultiColumnTableParser2 {
         private int start;
         private int length;
         private int spacesBefore;
+        public void setLength(int length) {
+            if (length <= 0) {
+                throw new IllegalArgumentException("length must be positive");
+            }
+            this.length = length;
+        }
     }
 
     @Data @Builder

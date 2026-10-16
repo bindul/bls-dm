@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import lombok.extern.log4j.Log4j2;
@@ -33,30 +32,23 @@ import lombok.extern.log4j.Log4j2;
 public class MultiColumnTableParser2Test {
 
     @Test
-//    @Disabled("Disabled until MultiColumnTableParser2 is fully implemented")
-    void testParsePlayersTable() throws Exception {
-        List<String> lines = parseFile("players.txt");
+    void testParseColumns_00_SingleCharacterColumn() throws Exception {
+        List<String> lines = List.of(
+                "    Player P008                               0        0          0      0      0      0                                                0        30"
+        );
         MultiColumnTableParser2 parser = new MultiColumnTableParser2();
-        List<ColumnGroup> columns = parser.identifyColumns(lines, Pair.of(0, lines.size()));
-        log.debug("Parsed player columns: {}", columns);
-
-/*
-                                                                             High    High    HDCP     HDCP                                   HDCP
-    Name                                      Avg HDCP        Pins  Gms      Game    Sers   Game      Sers     -1-     -2-    -3-    Total   Total
-    1 - Team A4
-    Player P001                             177       29       1600      9    254    580     269      625       173    179     161    513      591
- */
-        assertEquals(14, columns.size(), "Expected 14 columns to be parsed");
-        // Name
-        assertEquals(new ColumnDescriptor(5, 40, "Name"), columns.get(0));
-        // TODO add assertions to validate the parsed columns
-        // [ColumnDescriptor[start=0, length=41, name=Name], ColumnDescriptor[start=41, length=8, name=Avg HDCP], ColumnDescriptor[start=49, length=11, name=110], ColumnDescriptor[start=60, length=9, name=Pins Gms], ColumnDescriptor[start=69, length=5, name=9], ColumnDescriptor[start=74, length=7, name=High Game], ColumnDescriptor[start=81, length=8, name=High Sers], ColumnDescriptor[start=89, length=9, name=HDCP Game], ColumnDescriptor[start=98, length=11, name=HDCP Sers -1-], ColumnDescriptor[start=109, length=7, name=79], ColumnDescriptor[start=116, length=8, name=-2- -3-], ColumnDescriptor[start=124, length=6, name=59], ColumnDescriptor[start=130, length=9, name=Total], ColumnDescriptor[start=139, length=3, name=HDCP Total]]
+        List<ColumnGroup> columnGroups = parser.identifyColumns(lines, Pair.of(0, lines.size()));
+        log.debug("Parsed single character columns: {}", columnGroups);
+        assertEquals(1, columnGroups.size(), "Expected 1 column group to be parsed");
+        assertEquals(9, columnGroups.get(0).getColumns().size(), "Expected 9 columns in the column group");
+        ColumnDescriptor firstNumCol = columnGroups.get(0).getColumns().get(1);
+        assertEquals("0", lines.get(0).substring(firstNumCol.start(), firstNumCol.start() + firstNumCol.length()) , "Expected first '0' to be at index 44");
     }
 
     @Test
     void testParseColumns_01_SimpleTable_LeftAligned() throws Exception {
         List<String> lines = parseFile("column-test.txt");
-        MultiColumnTableParser2 parser = new MultiColumnTableParser2(2);
+        MultiColumnTableParser2 parser = new MultiColumnTableParser2(2, MultiColumnTableParser2.DEFAULT_MAX_COL_COUNT_DIFF_TO_MERGE);
         List<ColumnGroup> columnGroups = parser.identifyColumns(lines, Pair.of(1, 5)); // See column-test.txt for the lines being parsed
         log.debug("Parsed simple table columns: {}", columnGroups);
         assertEquals(1, columnGroups.size(), "Expected 1 column group to be parsed");
@@ -101,7 +93,7 @@ public class MultiColumnTableParser2Test {
     @Test
     void testParseColumns_04_SimpleTable_FirstLeftAligned() throws Exception {
         List<String> lines = parseFile("column-test.txt");
-        MultiColumnTableParser2 parser = new MultiColumnTableParser2(2);
+        MultiColumnTableParser2 parser = new MultiColumnTableParser2(2, MultiColumnTableParser2.DEFAULT_MAX_COL_COUNT_DIFF_TO_MERGE);
         List<ColumnGroup> columnGroups = parser.identifyColumns(lines, Pair.of(19, 23)); // See column-test.txt for the lines being parsed
         log.debug("Parsed first left aligned column table columns: {}", columnGroups);
         assertEquals(1, columnGroups.size(), "Expected 1 column group to be parsed");
@@ -110,6 +102,29 @@ public class MultiColumnTableParser2Test {
         assertEquals(new ColumnDescriptor(2, 7, null), columnGroup.getColumns().get(0), "Average column should start at 12 and have length 7");
         assertEquals(new ColumnDescriptor(14, 7, null), columnGroup.getColumns().get(1), "Score column should start at 24 and have length 7");
         assertEquals(new ColumnDescriptor(24, 5, null), columnGroup.getColumns().get(2), "Lanes column should start at 34 and have length 5");
+    }
+
+    @Test
+    void testParseColumns_05_PlayersTable_EmptyColumns_MultiLineHeaders () throws Exception {
+        List<String> lines = parseFile("column-test.txt");
+        MultiColumnTableParser2 parser = new MultiColumnTableParser2(MultiColumnTableParser2.DEFAULT_MIN_SPACE_BETWEEN_COLUMNS, 5);
+        List<ColumnGroup> columnGroups = parser.identifyColumns(lines, Pair.of(25, 47));
+        log.debug("Parsed players table columns: {}", columnGroups);
+
+        assertEquals(3, columnGroups.size(), "Expected 3 column groups to be parsed"); // Title, Header, Data
+        // TODO Additional assertions to verify the correctness of the parsed column groups, headers, and data columns.
+    }
+
+    @Test
+    void testParseColumns_06_PlayersTable_EmptyColumns_MultiLineHeaders () throws Exception {
+        List<String> lines = parseFile("column-test.txt");
+        MultiColumnTableParser2 parser = new MultiColumnTableParser2(MultiColumnTableParser2.DEFAULT_MIN_SPACE_BETWEEN_COLUMNS, 3);
+        List<ColumnGroup> columnGroups = parser.identifyColumns(lines, Pair.of(49, 54));
+        log.debug("Parsed empty columns table columns: \n{}", prettyPrintColumnGroups(columnGroups));
+
+        assertEquals(1, columnGroups.size(), "Expected 1 column groups to be parsed"); // Title, Header, Data
+        ColumnGroup columnGroup = columnGroups.get(0);
+        assertEquals(4, columnGroup.getColumns().size(), "Expected 4 columns in the column group");
     }
 
     private List<String> parseFile(String fileName) throws IOException {
@@ -121,5 +136,20 @@ public class MultiColumnTableParser2Test {
                 return scanner.useDelimiter("\\A").hasNext() ? List.of(scanner.next().split("\\R")) : List.of();
             }
         }
+    }
+
+    private String prettyPrintColumnGroups(List<ColumnGroup> columnGroups) {
+        StringBuilder sb = new StringBuilder();
+        for (ColumnGroup group : columnGroups) {
+            if (null == group) {
+                continue;
+            }
+            sb.append("Column Group: lines ").append(group.getLines()).append("\n");
+            for (ColumnDescriptor col : group.getColumns()) {
+                sb.append("\tcol: ").append(col.start()).append(" [").append(col.length()).append("]");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }
